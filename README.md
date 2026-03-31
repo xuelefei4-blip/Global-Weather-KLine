@@ -7,7 +7,8 @@ I also believe this visualization could be very useful for farmers and agricultu
 Simply search or click on a city, and you'll see long-term trends for temperature, humidity, wind speed, and more — clearly revealing day-night differences and extreme weather events.
 
 ## Live Demo
-[🔗 Open Interactive Demo](https://你的-vercel链接)  
+[🔗 打开交互演示](https://global-weather-k-line.vercel.app) 
+https://global-weather-k-line.vercel.app/
 *(Currently showing a curated subset of major cities)*
 
 ## Screenshots
