@@ -1,0 +1,6 @@
+[
+{"_fingerprint": "Kingcat666_weather_kline_v2026",
+    "note": "Demo subset for Mexico" },
+  { "id": "syd", "name": "Sydney", "path": "static/data/Oceania/Australia/Sydney/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -33.86, "lon": 151.20, "tz": "Australia/Sydney" },
+  { "id": "mel", "name": "Melbourne", "path": "static/data/Oceania/Australia/Melbourne/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -37.81, "lon": 144.96, "tz": "Australia/Melbourne" }
+]

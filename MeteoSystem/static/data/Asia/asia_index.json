@@ -1,0 +1,13 @@
+{
+  "region": "Asia",
+  "_fingerprint": "Kingcat666_weather_kline_v2026",
+  "children": [
+    { "name": "China", "path": "static/data/Asia/China/china_cities.json" },
+    { "name": "Japan", "path": "static/data/Asia/Japan/japan_cities.json" },
+    { "name": "South Korea", "path": "static/data/Asia/South_Korea/sk_cities.json" },
+    { "name": "India", "path": "static/data/Asia/India/india_cities.json" },
+    { "name": "Singapore", "path": "static/data/Asia/Singapore/sin_cities.json" },
+    { "name": "United Arab Emirates", "path": "static/data/Asia/UAE/uae_cities.json" },
+    { "name": "Indonesia", "path": "static/data/Asia/Indonesia/indo_cities.json" }
+    ]
+}

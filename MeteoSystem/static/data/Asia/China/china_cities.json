@@ -1,0 +1,6 @@
+[
+  {"_fingerprint": "Kingcat666_weather_kline_v2026",
+    "note": "Demo subset for Mexico" },
+  { "id": "bj", "name": "Beijing", "path": "static/data/Asia/China/Beijing/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 39.90, "lon": 116.40, "tz": "Asia/Shanghai" },
+  { "id": "sha", "name": "Shanghai", "path": "static/data/Asia/China/Shanghai/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 31.23, "lon": 121.47, "tz": "Asia/Shanghai" }
+]

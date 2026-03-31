@@ -1,0 +1,6 @@
+[
+{"_fingerprint": "Kingcat666_weather_kline_v2026",
+    "note": "Demo subset for Mexico" },
+  { "id": "tok", "name": "Tokyo", "path": "static/data/Asia/Japan/Tokyo/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 35.68, "lon": 139.76, "tz": "Asia/Tokyo" },
+  { "id": "osa", "name": "Osaka", "path": "static/data/Asia/Japan/Osaka/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 34.69, "lon": 135.50, "tz": "Asia/Tokyo" }
+]

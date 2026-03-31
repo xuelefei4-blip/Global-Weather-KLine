@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "source": "Kingcat666_weather_kline_v2026",
+    "version": "1.0",
+    "generated_at": "2026-03-31",
+    "note": "Curated subset for demonstration only. Commercial use requires permission.",
+    "owner": "Kingcat666"
+  },
+  "data": [
+    { "name": "North America", "path": "static/data/North_America/na_index.json" },
+    { "name": "Europe", "path": "static/data/Europe/eu_index.json" },
+    { "name": "Asia", "path": "static/data/Asia/asia_index.json" },
+    { "name": "Oceania", "path": "static/data/Oceania/oc_index.json" }
+  ]
+}
