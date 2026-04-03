@@ -46,3 +46,7 @@ I'd love to hear your thoughts:
 - Any suggestions or ideas are welcome!
 
 Feel free to leave a comment or reach out to me on X (Twitter).
+
+
+2026.4.3_feat: add X (Twitter) and Reddit share links to footer——index.html
+2024.4.3—add Osaka data
