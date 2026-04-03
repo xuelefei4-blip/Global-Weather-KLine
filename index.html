@@ -8,7 +8,7 @@
     <meta name="version" content="1.0.20260328">
     <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
     <meta name="robots" content="index,follow">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://unpkg.com/globe.gl"></script>
 
@@ -209,6 +209,30 @@
             font-family: monospace;
             line-height: 1.5;
         }
+
+        /* 8. 左下角社交链接样式 */
+        .social-share-links {
+            position: fixed;
+            bottom: 30px; /* 距离底部高度 */
+            left: 45px;   /* 距离左侧距离 */
+            display: flex;
+            gap: 25px;    /* 图标间距 */
+            z-index: 10001;
+        }
+
+        .social-share-links a {
+            color: rgba(255, 255, 255, 0.4); /* 初始半透明灰色 */
+            font-size: 24px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        /* 悬停效果：变绿并稍微放大 */
+        .social-share-links a:hover {
+            color: #00ff7f; 
+            transform: translateY(-5px) scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(0, 255, 127, 0.5));
+        }
     </style>
 </head>
 <body>
@@ -267,6 +291,22 @@
             </div>
         </div>
     </div>
+
+    <div class="social-share-links">
+    <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20amazing%20Global%20Meteorology%20Monitor!%20%23ClimateData%20%23KLine&url=https://global-weather-k-line.vercel.app" 
+       target="_blank" title="Share to X">
+        <i class="fab fa-x-twitter"></i>
+    </a>
+    
+    <a href="https://www.reddit.com/submit?url=https://global-weather-k-line.vercel.app&title=Global%20Meteorology%20Monitor%20using%20Weather%20K-Line" 
+       target="_blank" title="Share on Reddit">
+        <i class="fab fa-reddit-alien"></i>
+    </a>
+
+    <a href="https://github.com/你的用户名/你的仓库名" target="_blank" title="View on GitHub">
+        <i class="fab fa-github"></i>
+    </a>
+</div>
 
     <div style="text-align:center; margin:30px auto 15px; font-size:10px; color:#777; max-width:1000px; line-height:1.5;">
         © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
