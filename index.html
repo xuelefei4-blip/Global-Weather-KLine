@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="EN-US">
-<head>
+<search>
     <meta charset="UTF-8">
     <title>Global Meteorology Monitor</title>
     <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
@@ -8,6 +8,7 @@
     <meta name="version" content="1.0.20260328">
     <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
     <meta name="robots" content="index,follow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://unpkg.com/globe.gl"></script>
@@ -15,16 +16,19 @@
     <style>
         /* 1. 基础页面布局：背景图、遮罩与字体 */
         body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover no-repeat fixed;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow-y: auto;
-            padding: 15px 0;
-        }
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover no-repeat fixed;
+    background-blend-mode: multiply;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow-y: auto;
+    padding: 15px 0;
+}
 
         /* 背景半透明遮罩 */
         body::before {
@@ -34,7 +38,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(89, 89, 89, 0.15);
             z-index: -1;
         }
 
@@ -128,6 +132,8 @@
         .footer-panel {
             z-index: 1;
             margin-top: 15px;
+            margin-left: auto;
+    margin-right: auto;
             padding: 15px 40px;
             background: rgba(18, 22, 30, 0.85);
             border-radius: 22px;
@@ -181,7 +187,7 @@
             right: 58px;
             width: 100px;
             height: 100px;
-            z-index: 10000;
+            z-index: 9999;
             cursor: pointer;
             border-radius: 50%;
             overflow: hidden;
@@ -209,31 +215,50 @@
             font-family: monospace;
             line-height: 1.5;
         }
-
-        /* 8. 左下角社交链接样式 */
-        .social-share-links {
-            position: fixed;
-            bottom: 30px; /* 距离底部高度 */
-            left: 45px;   /* 距离左侧距离 */
-            display: flex;
-            gap: 25px;    /* 图标间距 */
-            z-index: 10001;
-        }
-
-        .social-share-links a {
-            color: rgba(255, 255, 255, 0.4); /* 初始半透明灰色 */
-            font-size: 24px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        /* 悬停效果：变绿并稍微放大 */
-        .social-share-links a:hover {
-            color: #00ff7f; 
-            transform: translateY(-5px) scale(1.1);
-            filter: drop-shadow(0 0 8px rgba(0, 255, 127, 0.5));
-        }
+        
     </style>
+
+    <style>
+    .social-links {
+        position: fixed;
+        bottom: 35px; /* 调整到你红圈的高度 */
+        left: 40px;   /* 距离左侧距离 */
+        display: flex;
+        gap: 20px;
+        z-index: 10000;
+    }
+
+    .social-links a {
+        color: rgba(255, 255, 255, 0.4); /* 初始颜色较暗，不抢主图戏 */
+        font-size: 20px;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .social-links a:hover {
+        color: #00ff7f; /* 悬停时变成你主题的绿色 */
+        transform: translateY(-3px);
+    }
+    
+    .lab-btn {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: #8e94a5;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.lab-btn:hover {
+    background: rgba(0,255,127,0.18);
+    color: #00ff7f;
+    transform: translateY(-1px);
+}
+
+</style>
 </head>
 <body>
 
@@ -251,11 +276,21 @@
                 <label><input type="radio" name="res" value="Y"><span>Y</span></label>
             </div>
 
-            <div class="btn-group">
-                <label><input type="checkbox" id="hum-check"><span>Humidity %</span></label>
-                <label><span class="btn-disabled">Pressure</span></label>
-                <label><span class="btn-disabled">Wind</span></label>
-            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+
+    <!-- 实验室按钮 -->
+    <button id="lab-btn" class="lab-btn">
+        Compare Lab
+    </button>
+
+    <!-- 原功能按钮组（保持不变） -->
+    <div class="btn-group">
+        <label><input type="checkbox" id="hum-check"><span>Humidity %</span></label>
+        <label><span class="btn-disabled">Pressure</span></label>
+        <label><span class="btn-disabled">Wind</span></label>
+    </div>
+
+</div>
         </div>
 
         <div id="main-chart-container">
@@ -263,6 +298,18 @@
         </div>
     </div>
 
+
+ <div class="social-links">
+    <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20cool%20Weather%20K-Line!&url=https://your-vercel-link.vercel.app" target="_blank" title="Share on X">
+        <i class="fa-brands fa-x-twitter"></i>
+    </a>
+    <a href="https://www.reddit.com/submit?url=https://your-vercel-link.vercel.app&title=Global%20Meteorology%20Monitor%20using%20K-Line" target="_blank" title="Share on Reddit">
+        <i class="fa-brands fa-reddit-alien"></i>
+    </a>
+    <a href="https://github.com/your-username/your-repo" target="_blank" title="View on GitHub">
+        <i class="fa-brands fa-github"></i>
+    </a>
+</div>
     <div class="footer-panel">
         <div class="footer-row">
             <div class="footer-item">
@@ -290,18 +337,6 @@
                 <b id="local-clock">00:00:00</b>
             </div>
         </div>
-    </div>
-
-    <div class="social-share-links">
-        <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20Weather%20K-Line!&url=https://global-weather-k-line.vercel.app" target="_blank" title="Share on X">
-            <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://www.reddit.com/submit?url=https://global-weather-k-line.vercel.app&title=Global%20Meteorology%20Monitor" target="_blank" title="Share on Reddit">
-            <i class="fab fa-reddit-alien"></i>
-        </a>
-        <a href="https://github.com/Kingcat66695111" target="_blank" title="Source Code">
-            <i class="fab fa-github"></i>
-        </a>
     </div>
 
     <div style="text-align:center; margin:30px auto 15px; font-size:10px; color:#777; max-width:1000px; line-height:1.5;">
@@ -354,6 +389,18 @@
             { name: "Sydney", id: "syd", lat: -33.86, lon: 151.20, tz: "Australia/Sydney", path: "static/data/Oceania/", years: fullYears },
             { name: "Melbourne", id: "mel", lat: -37.81, lon: 144.96, tz: "Australia/Melbourne", path: "static/data/Oceania/", years: fullYears }
         ];
+
+
+        function formatStaticPath(p) {
+    if (!p) return "";
+    let path = p.trim();
+    // 如果路径里没有 static/，手动补上
+    if (!path.includes('static/')) path = 'static/' + path;
+    // 确保以 / 开头，代表绝对路径
+    if (!path.startsWith('/')) path = '/' + path;
+    // 修复连续出现的斜杠
+    return path.replace(/\/+/g, '/');
+}
 
         /**
          * MeteoApp 类：核心逻辑管理
@@ -554,65 +601,44 @@
 
             // 加载配置与数据索引
             async _loadIndex() {
-    try {
-        // 1. 初始化内置城市
-        major_cities.forEach(city => {
-            this.cityList.push(city);
-            this.locationConfig[city.id] = city;
-            this._addCityToUI(city);
-        });
+                try {
+                    // 初始内置城市（确保路径正确）
+                    major_cities.forEach(city => {
+                        this.cityList.push(city);
+                        this.locationConfig[city.id] = city;
+                        this._addCityToUI(city);
+                    });
 
-        // 2. 尝试从本地加载 index.json
-        const res = await fetch('static/data/index.json');
-        if (!res.ok) throw new Error("index.json not found");
-        
-        const data = await res.json();
+                    // 使用绝对路径请求根索引
+                    const rootIndexUrl = "/static/data/index.json";
+                    const res = await fetch(rootIndexUrl);
+                    if (!res.ok) throw new Error("index.json not found at " + rootIndexUrl);
+                    const data = await res.json();
 
-        // === 新增：处理带 metadata 的结构 ===
-        let regionsData = data;
-
-        // 如果有 metadata，说明是新结构，取 regions 或 data 字段
-        if (data.metadata) {
-            console.log("Loaded index with metadata:", data.metadata.source);
-            regionsData = data.regions || data.data || data;
-        }
-
-        const recursiveLoad = async (items) => {
-            const list = Array.isArray(items) ? items : (items.children || []);
-            
-            for (let it of list) {
-                if (it.path && it.path.endsWith('.json') && !it.id) {
-                    // 加载子 index.json
-                    const r = await fetch(it.path);
-                    if (r.ok) {
-                        const subData = await r.json();
-                        // 子文件也可能带 metadata
-                        const subItems = subData.metadata ? 
-                            (subData.regions || subData.data || subData) : subData;
-                        await recursiveLoad(subItems);
-                    }
-                } 
-                else if (it.id) {
-                    // 添加城市
-                    if (this.locationConfig[it.id]) {
-                        Object.assign(this.locationConfig[it.id], it);
-                    } else {
-                        this.cityList.push(it);
-                        this.locationConfig[it.id] = it;
-                        this._addCityToUI(it);
-                    }
+                    const recursiveLoad = async (items) => {
+                        const list = Array.isArray(items) ? items : (items.children || []);
+                        for (let it of list) {
+                            // 处理递归路径
+                            if (it.path && it.path.endsWith('.json') && !it.id) {
+                                const subPath = formatStaticPath(it.path);
+                                const r = await fetch(subPath);
+                                if (r.ok) await recursiveLoad(await r.json());
+                            } else if (it.id) {
+                                if (this.locationConfig[it.id]) {
+                                    Object.assign(this.locationConfig[it.id], it);
+                                } else {
+                                    this.cityList.push(it);
+                                    this.locationConfig[it.id] = it;
+                                    this._addCityToUI(it);
+                                }
+                            }
+                        }
+                    };
+                    await recursiveLoad(data);
+                } catch (e) {
+                    console.warn("Path tracing failed, using fallback:", e.message);
                 }
             }
-        };
-
-        await recursiveLoad(regionsData);
-
-        console.log(`Loaded ${this.cityList.length} cities from index.json`);
-
-    } catch (e) {
-        console.warn("Using built-in cities mode:", e.message);
-    }
-}
 
             // 更新 UI 中的搜索列表
             _addCityToUI(city) {
@@ -627,6 +653,10 @@
 
             // 绑定事件处理
             _bindEvents() {
+
+                document.getElementById('lab-btn').onclick = () => {
+    window.open('./LAB.html', '_blank');
+};
                 // 周期切换
                 document.querySelectorAll('input[name="res"]').forEach(r => {
                     r.onchange = () => this.updateView();
@@ -663,25 +693,26 @@
                 const city = this.locationConfig[id];
                 if (!city) return;
 
-                // 显示加载状态
                 this.dom.container.style.opacity = 0.4;
                 this.dom.coord.innerText = "Loading " + (city.name || id) + "...";
 
                 try {
-                    // 缓存检查
                     if (this.dataCache.has(id)) {
                         this.rawData = this.dataCache.get(id);
-                        console.log(`[Cache Hit] 使用缓存: ${city.name}`);
                     } else {
-                        // 实际加载数据
                         const years = city.years || [2025, 2026];
-
+                        
+                        // 构造绝对路径：/static/data/.../cityid_year.json
                         const results = await Promise.allSettled(
-                            years.map(y => 
-                                fetch(`${city.path || ''}${city.id}_${y}.json`)
-                                    .then(r => r.ok ? r.json() : null)
-                                    .catch(() => null)
-                            )
+                            years.map(y => {
+                                let cityPath = formatStaticPath(city.path || '');
+                                // 确保路径以 / 结尾再拼接文件名
+                                if (!cityPath.endsWith('/')) cityPath += '/';
+                                const finalUrl = `${cityPath}${city.id}_${y}.json`;
+                                
+                                console.log(`[Requesting] ${finalUrl}`);
+                                return fetch(finalUrl).then(r => r.ok ? r.json() : null);
+                            })
                         );
 
                         this.rawData = [];
@@ -692,20 +723,14 @@
                         });
 
                         this.rawData.sort((a, b) => a.time - b.time);
-
-                        // 存入缓存
-                        if (this.rawData.length > 0) {
-                            this.dataCache.set(id, [...this.rawData]);
-                            console.log(`[Cache Saved] ${city.name} 数据已缓存`);
-                        }
+                        if (this.rawData.length > 0) this.dataCache.set(id, [...this.rawData]);
                     }
 
-                    // 更新坐标
+                    // 更新 UI 逻辑保持不变...
                     const latDir = city.lat >= 0 ? 'N' : 'S';
                     const lonDir = city.lon >= 0 ? 'E' : 'W';
                     this.dom.coord.innerText = `${Math.abs(city.lat)}° ${latDir}, ${Math.abs(city.lon)}° ${lonDir}`;
 
-                    // 更新地球仪
                     if (this.globeIns) {
                         this.globeIns.ringsData([{ lat: city.lat, lng: city.lon }]);
                         this.globeIns.pointOfView({ lat: city.lat, lng: city.lon, altitude: 2 }, 800);
@@ -713,26 +738,21 @@
 
                     this.updateView();
 
-                    // 更新搜索框
                     const searchInput = document.getElementById('location-search-input');
-                    if (searchInput) {
-                        searchInput.value = city.name;
-                    }
+                    if (searchInput) searchInput.value = city.name;
 
-                    // 更新地球仪下方城市名称
                     const cityDisplay = document.getElementById('selected-city-display');
-                    if (cityDisplay) {
-                        cityDisplay.textContent = city.name || '';
-                    }
+                    if (cityDisplay) cityDisplay.textContent = city.name || '';
 
                 } catch (e) {
-                    console.error("切换城市失败:", e);
+                    console.error("Data fetch failed:", e);
                     this.dom.coord.innerText = "Load failed";
                 } finally {
                     this.dom.container.style.opacity = 1;
                     history.replaceState(null, "", `?city=${id}`);
                 }
             }
+    
 
             // 根据当前选择的时间粒度渲染图表
             updateView() {
