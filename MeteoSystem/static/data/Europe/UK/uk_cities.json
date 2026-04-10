@@ -1,5 +1,4 @@
 [
-{"_fingerprint": "Kingcat666_weather_kline_v2026",
-    "note": "Demo subset for Mexico" },
-  { "id": "lon", "name": "London", "path": "static/data/Europe/UK/London/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 51.50, "lon": -0.12, "tz": "Europe/London" }
+  { "id": "lon", "name": "London", "path": "static/data/Europe/UK/London/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 51.50, "lon": -0.12, "tz": "Europe/London" },
+  { "id": "man", "name": "Manchester", "path": "static/data/Europe/UK/Manchester/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 53.48, "lon": -2.24, "tz": "Europe/London" }
 ]

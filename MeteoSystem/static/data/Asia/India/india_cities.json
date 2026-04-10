@@ -1,5 +1,5 @@
 [
-{"_fingerprint": "Kingcat666_weather_kline_v2026",
-    "note": "Demo subset for Mexico" },
-  { "id": "bom", "name": "Mumbai", "path": "static/data/Asia/India/Mumbai/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 19.07, "lon": 72.87, "tz": "Asia/Kolkata" }
+  { "id": "bom", "name": "Mumbai", "path": "static/data/Asia/India/Mumbai/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 19.07, "lon": 72.87, "tz": "Asia/Kolkata" },
+  { "id": "del", "name": "Delhi", "path": "static/data/Asia/India/Delhi/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 28.61, "lon": 77.20, "tz": "Asia/Kolkata" },
+  { "id": "lud", "name": "Ludhiana", "path": "static/data/Asia/India/Ludhiana/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 30.90, "lon": 75.85, "tz": "Asia/Kolkata" }
 ]

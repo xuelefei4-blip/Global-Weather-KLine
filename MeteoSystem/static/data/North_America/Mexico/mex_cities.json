@@ -1,5 +1,3 @@
 [
-{"_fingerprint": "Kingcat666_weather_kline_v2026",
-    "note": "Demo subset for Mexico" },
   { "id": "mex", "name": "Mexico City", "path": "static/data/North_America/Mexico/Mexico_City/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 19.43, "lon": -99.13, "tz": "America/Mexico_City" }
 ]

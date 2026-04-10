@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Meteorology Monitor</title>
+    <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
+    <meta name="author" content="Kingcat66695111">
+    <meta name="version" content="1.0.20260328">
+    <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
+    <meta name="robots" content="index,follow">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+
+    <style>
+       /* 1. 基础页面布局 */
+        body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover no-repeat fixed;
+    background-blend-mode: multiply;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow-y: auto;
+    padding: 15px 0;
+}
+
+
+        /* 背景半透明遮罩 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(89, 89, 89, 0.15);
+            z-index: -1;
+        }
+
+
+        /* 2. 标题样式 */
+        .main-floating-title {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* 3. 主图表外壳 */
+        .chart-wrapper {
+            position: relative;
+            z-index: 1;
+            width: min(1100px, 98vw); 
+            padding: 10px 20px 15px 20px; 
+            background: rgba(26, 28, 34, 0.9);
+            margin: 0 auto 100px auto;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(1px);
+            border-radius: 16px; 
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+            
+        }
+
+        .chart-label { font-size: 22px; font-weight: bold; color: #00ff9d; margin-bottom: 15px; }
+
+        .search-container { position: relative; max-width: 300px; margin-bottom: 12px; }
+        .search-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00ff7f; 
+            font-size: 13spx;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 4px;
+            width: 140px;
+            outline: none;
+        }
+        .search-input:focus { border-color: #00ff7f; }
+
+        .dropdown {
+            position: absolute; top: 100%; left: 0; right: 0; background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0,255,157,0.3); border-top: none; max-height: 200px;
+            overflow-y: auto; display: none; z-index: 100; border-radius: 0 0 8px 8px;
+        }
+        .dropdown.show { display: block; }
+        .dropdown-item { padding: 6px 11px; cursor: pointer; font-size: 13px;font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .dropdown-item:hover { background: rgba(0,255,157,0.18); }
+
+        .meta-info { font-family: monospace; font-size: 11px; color: #aaa; margin-bottom: 15px; }
+        .main-chart-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        /* 5. Tooltip 弹窗 */
+        .custom-tooltip {
+            width: 90px;
+            position: absolute;
+            display: none;
+            padding: 12px;
+            z-index: 1000;
+            pointer-events: none;
+            border-radius: 10px;
+            background: rgba(22, 27, 37, 0.95);
+            border: 0.25px solid rgba(225, 255, 225, 0.1);
+            font-size: 11px;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+
+        /* 4. 顶部控制面板 */
+        .header-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+         /* 按钮组 */
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            align-items: center;
+        }
+
+        .btn-group label input {
+            display: none; 
+        }
+
+        .btn-group label span {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #777;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-group label input:checked + span {
+    background: rgba(0, 255, 127, 0.2);
+    color: #00ff7f;
+}
+
+/* 补充：为了美观，可以给 span 增加一点过渡效果 */
+.btn-group label span {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #777;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease; /* 增加平滑动画 */
+    user-select: none;         /* 防止点击过快选中文字 */
+}
+
+
+.index-btn {
+    background: rgba(255,255,255,0.05);
+    border: none;
+    color: #8e94a5;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.index-btn:hover {
+    background: rgba(0,255,127,0.18);
+    color: #00ff7f;
+    transform: translateY(-1px);
+}
+    </style>
+</head>
+<body>
+
+<div class="main-floating-title">METEOROLOGY LAB</div>
+
+<div class="chart-wrapper">
+
+    <div class="header-panel" style="display: flex; align-items: center; gap: 15px;">
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="search-container" style="position: relative;">
+                <input type="text" id="searchA" class="search-input" 
+                    placeholder="Search City..." 
+                    autocomplete="off"
+                    style="background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00ff7f;  
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 8px;
+            width: 140px;
+            outline: none;">
+                <div id="dropdownA" class="dropdown"></div>
+            </div>
+
+            <div style="font-family: 'Consolas', monospace; font-size: 11px; color: rgba(255,255,255,0.5);">
+                COORD: <b id="coordA" style="color: #eee; font-weight: normal;">--° N, --° W</b>
+                <span style="margin: 0 8px; opacity: 0.3;">|</span>
+                TIME: <b id="clockA" style="color: #eee; font-weight: normal;">00:00:00</b>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="index-btn" class="index-btn">
+        Compare Lab
+    </button>
+            <div class="btn-group">
+                <label><input type="radio" name="resA" value="H"><span>H</span></label>
+                <label><input type="radio" name="resA" value="D" checked><span>D</span></label>
+                <label><input type="radio" name="resA" value="W"><span>W</span></label>
+                <label><input type="radio" name="resA" value="M"><span>M</span></label>
+                <label><input type="radio" name="resA" value="Y"><span>Y</span></label>
+            </div>
+
+            
+            <div class="btn-group">
+        <label>
+            <input type="checkbox" id="humA" checked>
+            <span>Humidity %</span>
+        </label>
+    </div>
+        </div>
+    </div>
+
+    <div id="containerA" class="main-chart-container" style="position: relative; width: 100%; height: 300px; background: transparent;">
+        <div id="tooltipA" class="custom-tooltip"></div>
+    </div>
+</div>
+
+<div class="chart-wrapper">
+
+
+    <div class="header-panel" style="display: flex; align-items: center; gap: 15px;">
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="search-container" style="position: relative;">
+                <input type="text" id="searchB" class="search-input" 
+                    placeholder="Search City..." 
+                    autocomplete="off"
+                    style="background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #00ff7f;  
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 8px;
+            width: 140px;
+            outline: none;">
+                <div id="dropdownB" class="dropdown"></div>
+            </div>
+
+            <div style="font-family: 'Consolas', monospace; font-size: 11px; color: rgba(255,255,255,0.5);">
+                COORD: <b id="coordB" style="color: #eee; font-weight: normal;">--° N, --° W</b>
+                <span style="margin: 0 8px; opacity: 0.3;">|</span>
+                TIME: <b id="clockB" style="color: #eee; font-weight: normal;">00:00:00</b>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="btn-group">
+                <label><input type="radio" name="resB" value="H"><span>H</span></label>
+                <label><input type="radio" name="resB" value="D" checked><span>D</span></label>
+                <label><input type="radio" name="resB" value="W"><span>W</span></label>
+                <label><input type="radio" name="resB" value="M"><span>M</span></label>
+                <label><input type="radio" name="resB" value="Y"><span>Y</span></label>
+            </div>
+
+            
+            <div class="btn-group">
+        <label>
+            <input type="checkbox" id="humB" checked>
+            <span>Humidity %</span>
+        </label>
+    </div>
+        </div>
+    </div>
+
+    <div id="containerB" class="main-chart-container" style="position: relative; width: 100%; height: 300px; background: transparent;">
+        <div id="tooltipB" class="custom-tooltip"></div>
+    </div>
+</div>
+    
+    <div style="text-align:center; margin:30px auto 15px; font-size:10px; color:#777; max-width:1000px; line-height:1.5;">
+        © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
+        Version: 2026.03.28 • Built with passion for understanding climate change<br>
+        Educational & Non-commercial use only. Commercial use requires permission.<br>
+        If this tool helped you, consider supporting it → 
+        <a href="https://ko-fi.com/kingcat666" target="_blank" style="color:#00ff7f;">Ko-fi</a>
+        Visualizing climate through time-series analysis
+    </div>
+
+<script>
+    let allCities = [];
+    let popularCities = [];
+
+    function formatPath(p) {
+        if (!p) return "";
+        let path = p.trim().replace(/\\/g, '/');
+        if (!path.includes('static/')) path = 'static/' + path;
+        if (!path.startsWith('/')) path = '/' + path;
+        return path.replace(/\/+/g, '/');
+    }
+
+    class DualMeteoApp {
+        constructor(containerId, tooltipId, searchId, dropdownId, coordId, clockId, resName, humId) {
+            this.container = document.getElementById(containerId);
+            this.tooltip = document.getElementById(tooltipId);
+            this.search = document.getElementById(searchId);
+            this.dropdown = document.getElementById(dropdownId);
+            this.coordEl = document.getElementById(coordId);
+            this.clockEl = document.getElementById(clockId);
+            this.resName = resName;
+            this.humCheck = document.getElementById(humId);
+
+            this.chartIns = null;
+            this.series = {};
+            this.rawData = [];
+            this.dataCache = new Map();
+
+            this.initChart();
+            this.setupSearch();
+            this.bindEvents();
+        }
+
+        initChart() {
+            this.chartIns = LightweightCharts.createChart(this.container, {
+                layout: { background: { color: 'transparent' }, textColor: '#8e94a5', fontSize: 10 },
+                grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: { visible: true, labelVisible: true, style: 2, width: 1, color: 'rgba(255,255,255,0.4)' },
+                    horzLine: { visible: true, labelVisible: true, style: 2, width: 1, color: 'rgba(255,255,255,0.4)' }
+                },
+                localization: {
+                    timeFormatter: (t) => {
+                        const d = new Date(t * 1000);
+                            const yyyy = d.getFullYear();
+                            const mm = (d.getMonth() + 1).toString().padStart(2, '0');
+                            const dd = d.getDate().toString().padStart(2, '0');
+                            const hh = d.getHours().toString().padStart(2, '0');
+                            return `${yyyy}/${mm}/${dd} ${hh}:00`; 
+                    }
+                },
+                timeScale: {
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    timeVisible: true,
+                    // [间距调整] 设置较大的初始间距，确保不拥堵
+                    barSpacing: 12,
+                    minBarSpacing: 4,
+                    // 默认显示在最右侧
+                    rightOffset: 5,
+                    tickMarkFormatter: (t) => {
+                            const d = new Date(t * 1000);
+                            const yyyy = d.getFullYear();
+                            const mm = (d.getMonth() + 1).toString().padStart(2, '0');
+                            const dd = d.getDate().toString().padStart(2, '0');
+                            return `${yyyy}/${mm}/${dd}`;
+                        }
+                },
+                leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.15)', scaleMargins: { top: 0.1, bottom: 0.3 }, textColor: '#ddd' },
+                rightPriceScale: { visible: false }
+            });
+
+            this.chartIns.applyOptions({
+                watermark: { visible: true, text: "© Kingcat66695111", fontSize: 11, color: "rgba(255,255,255,0.1)", horzAlign: "right", vertAlign: "bottom" }
+            });
+
+            // [配色调整] 使用 LAB.html 的配色方案 #4caf50 / #ff5252
+            this.series.candle = this.chartIns.addCandlestickSeries({
+                upColor: '#26a69a', downColor: '#ef5350',     
+                borderVisible: false,
+                wickUpColor: '#4caf50',   
+                wickDownColor:'#fbc02d', 
+                priceLineVisible: false,
+                priceScaleId: 'left',
+                priceFormat: { type: 'custom', formatter: (p) => (p > 0 ? '+' : '') + p.toFixed(1) + '℃' }
+            });
+
+            this.series.hLine = this.chartIns.addLineSeries({ color: '#C0392B', lineWidth: 2, priceScaleId: 'left',
+                    visible: false, lastValueVisible: true, priceLineVisible: true});
+
+            this.series.vol = this.chartIns.addHistogramSeries({
+                priceScaleId: 'vol-scale', visible: false,
+                priceFormat: { type: 'custom', formatter: (p) => p.toFixed(1) + '%' }
+            });
+
+            this.chartIns.priceScale('vol-scale').applyOptions({ visible: true, position: 'right', borderVisible: false, scaleMargins: { top: 0.85, bottom: 0 } });
+            this.chartIns.subscribeCrosshairMove(p => this._handleTooltip(p));
+            this.series.vol.createPriceLine({
+                    price: 35, color: '#f44336', lineWidth: 1, lineStyle: 2,
+                    axisLabelVisible: true, title: 'DRT'
+                });
+        }
+
+        async loadCity(city) {
+            this.coordEl.textContent = `${Math.abs(city.lat)}° ${city.lat >= 0 ? 'N' : 'S'}, ${Math.abs(city.lon)}° ${city.lon >= 0 ? 'E' : 'W'}`;
+            const cacheKey = city.id;
+            if (this.dataCache.has(cacheKey)) {
+                this.rawData = this.dataCache.get(cacheKey);
+            } else {
+                this.rawData = [];
+                const years = city.years || [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+                for (let year of years) {
+                    try {
+                        const base = formatPath(city.path);
+                        const url = (base.endsWith('/') ? base : base + '/') + `${city.id}_${year}.json`;
+                        const res = await fetch(url);
+                        if (res.ok) {
+                            const json = await res.json();
+                            const values = json.values || json;
+                            this.rawData = this.rawData.concat(values);
+                        }
+                    } catch (e) {}
+                }
+                this.rawData.sort((a, b) => a.time - b.time);
+                this.dataCache.set(cacheKey, [...this.rawData]);
+            }
+            this.updateView();
+        }
+
+        updateView() {
+            const resType = document.querySelector(`input[name="${this.resName}"]:checked`).value;
+            const processed = this._aggregate(this.rawData, resType);
+            this.series.candle.setData(processed);
+            this.series.hLine.setData(resType === 'H' ? processed.map(d => ({ time: d.time, value: d.close ,color: '#C0392B'})) : []);
+            this.series.vol.setData(processed.map(d => {
+        const h = d.vol || 0;
+        
+        // 计算透明度 alpha：
+        // 设定一个范围，例如湿度从 30% 到 90% 对应透明度 0.2 到 0.9
+        // 这里的公式：(当前值 - 最小值) / (最大值 - 最小值) * 范围 + 起始透明度
+        let alpha = 0.2; // 默认最小透明度
+        if (h > 35) {
+            alpha = Math.min(0.9, 0.2 + ((h - 35) / (80 - 35)) * 0.7);
+        }
+
+        return {
+            time: d.time,
+            value: h,
+            // 使用 rgba 动态合成颜色
+            color: `rgba(100, 181, 246, ${alpha.toFixed(2)})`
+        };
+    }));
+            this.series.vol.applyOptions({ visible: this.humCheck.checked });
+            
+            const ts = this.chartIns.timeScale();
+            
+            // [间距调整逻辑] 
+            // 如果是日线(D)，约90个数据点占满屏幕，强制设置可见范围为最近90天（3个月）
+            if (resType === 'D' && processed.length > 0) {
+                this.series.hLine.applyOptions({ visible: false });
+                this.series.candle.applyOptions({ upColor: '#4caf50', downColor: '#fbc02d', wickVisible: true,priceLineVisible: true,
+lastValueVisible: true });
+                ts.applyOptions({ barSpacing: 12 });
+                
+                const lastIdx = processed.length - 1;
+                const firstIdx = Math.max(0, lastIdx - 90); // 限制显示约90个柱子（3个月）
+                ts.setVisibleRange({
+                    from: processed[firstIdx].time,
+                    to: processed[lastIdx].time
+                });
+            } else if (resType === 'H') {
+                this.series.hLine.applyOptions({ visible: true });
+                this.series.candle.applyOptions({ upColor: '#4caf50', downColor: '#fbc02d',  wickVisible: false,priceLineVisible: false,
+        lastValueVisible: false });
+                ts.applyOptions({ barSpacing: 6 });
+                ts.fitContent();
+            } else {
+                ts.applyOptions({ barSpacing: 15 });
+                ts.fitContent();
+            }
+        }
+
+        _aggregate(data, type) {
+            if (!data || data.length === 0) return [];
+            const res = []; let currentGroup = []; let lastKey = null;
+            data.forEach(d => {
+                const date = new Date(d.time * 1000);
+                let key;
+                if (type === 'H') key = d.time;
+                else if (type === 'D') key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+                else if (type === 'W') key = `${date.getFullYear()}-w${Math.ceil(((date - new Date(date.getFullYear(), 0, 1)) / 86400000 + 1) / 7)}`;
+                else if (type === 'M') key = `${date.getFullYear()}-${date.getMonth()}`;
+                else if (type === 'Y') key = date.getFullYear();
+                if (lastKey !== null && key !== lastKey) {
+                    res.push(this._formatBar(currentGroup));
+                    currentGroup = [];
+                }
+                currentGroup.push(d); lastKey = key;
+            });
+            if (currentGroup.length > 0) res.push(this._formatBar(currentGroup));
+            return res;
+        }
+
+        _formatBar(chunk) {
+            return {
+                time: chunk[0].time, open: chunk[0].open,
+                high: Math.max(...chunk.map(d => d.high)), low: Math.min(...chunk.map(d => d.low)),
+                close: chunk[chunk.length - 1].close, vol: chunk.reduce((s, d) => s + (d.vol || 0), 0) / chunk.length
+            };
+        }
+
+        _handleTooltip(p) {
+            if (!p.time || p.point.x < 0) { this.tooltip.style.display = 'none'; return; }
+            const d = p.seriesData.get(this.series.candle);
+            const v = p.seriesData.get(this.series.vol);
+            if (d) {
+                this.tooltip.style.display = 'block';
+                this.tooltip.style.left = (p.point.x + 15) + 'px';
+                this.tooltip.style.top = (p.point.y + 15) + 'px';
+                this.tooltip.innerHTML = `
+                    <div style="color:#4caf50; font-weight:600; margin-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.1);">Details</div>
+                        <div style="display:grid; grid-template-columns:50px 1fr; gap:2px; font-family:monospace;">
+                            <span style="color:#999">MAX:</span><b style="color:#ff5252">${d.high.toFixed(1)}℃</b>
+                            <span style="color:#999">OPEN:</span><b style="color:#eee">${d.open.toFixed(1)}℃</b>
+                            <span style="color:#999">CLOSE:</span><b style="color:#eee">${d.close.toFixed(1)}℃</b>
+                            <span style="color:#999">MIN:</span><b style="color:#448aff">${d.low.toFixed(1)}℃</b>
+                            <div style="grid-column: span 2; border-top:1px dashed #444; margin-top:4px; padding-top:4px; display:flex; justify-content:space-between">
+                                <span style="color:#999">HUM:</span>
+                                <b style="color:#b2ebf2">${v ? v.value.toFixed(2) : '0.00'}%</b>
+                            </div>
+                        </div>`;
+            }
+        }
+
+        bindEvents() {
+
+           
+            document.querySelectorAll(`input[name="${this.resName}"]`).forEach(r => {
+                r.addEventListener('change', () => this.updateView());
+            });
+            this.humCheck.addEventListener('change', () => {
+                this.series.vol.applyOptions({ visible: this.humCheck.checked });
+            });
+            document.addEventListener('click', (e) => {
+                if (!this.search.contains(e.target) && !this.dropdown.contains(e.target)) {
+                    this.dropdown.classList.remove('show');
+                }
+            });
+            
+            document.getElementById('index-btn').addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+        }
+
+        
+
+        setupSearch() {
+            this.search.addEventListener('input', () => this.filterDropdown());
+            this.search.addEventListener('focus', () => this.filterDropdown());
+        }
+
+        filterDropdown() {
+    const keyword = this.search.value.trim().toLowerCase();
+    this.dropdown.innerHTML = '';
+
+    let list = [];
+
+    if (keyword.length < 2) {
+        // 输入少于2个字符时 → 只显示你指定的默认60个热门城市
+        list = popularCities;
+    } else {
+        // 输入2个或更多字符时 → 从全部城市中搜索（包括以后新增的）
+        list = allCities.filter(c => 
+            (c.name && c.name.toLowerCase().includes(keyword)) || 
+            (c.id && c.id.toLowerCase().includes(keyword))
+        );
+    }
+
+    // 限制最多显示50条，防止下拉框过长
+    list = list.slice(0, 50);
+
+    if (list.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'dropdown-item';
+        empty.style.opacity = '0.6';
+        empty.textContent = keyword.length < 2 ? '点击或输入城市名称搜索' : '没有找到匹配的城市';
+        this.dropdown.appendChild(empty);
+    } else {
+        list.forEach(city => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+
+            // 高亮搜索关键词
+            if (keyword.length >= 2) {
+                const regex = new RegExp(keyword, 'gi');
+                item.innerHTML = city.name.replace(regex, match => 
+                    `<span style="background:rgba(0,255,127,0.3); padding:1px 2px; border-radius:2px;">${match}</span>`
+                );
+            } else {
+                item.textContent = city.name;
+            }
+
+            item.onclick = () => {
+                this.search.value = city.name;
+                this.dropdown.classList.remove('show');
+                this.loadCity(city);
+            };
+            this.dropdown.appendChild(item);
+        });
+    }
+
+    this.dropdown.classList.add('show');
+}
+    }
+
+    async function loadAllCities() {
+    try {
+        console.log("开始加载所有城市索引...");
+
+        // 第一步：加载顶级 index.json（大洲）
+        const indexRes = await fetch("/static/data/index.json");
+        if (!indexRes.ok) throw new Error("index.json 加载失败");
+        const regions = await indexRes.json();
+
+        allCities = [];
+
+        // 第二步：遍历每个大洲 → 国家 → 城市
+        for (let region of regions) {
+            try {
+                const regionRes = await fetch(formatPath(region.path));
+                if (!regionRes.ok) continue;
+
+                const regionData = await regionRes.json();
+                const countries = regionData.children || (Array.isArray(regionData) ? regionData : []);
+
+                for (let country of countries) {
+                    try {
+                        const countryRes = await fetch(formatPath(country.path));
+                        if (!countryRes.ok) continue;
+
+                        const cities = await countryRes.json();
+
+                        if (Array.isArray(cities)) {
+                            cities.forEach(city => {
+                                if (city.id && city.name && city.path) {
+                                    // 补充缺失字段
+                                    if (!city.years) city.years = [2025, 2026];
+                                    if (!city.lat) city.lat = 0;
+                                    if (!city.lon) city.lon = 0;
+                                    if (!city.country) city.country = country.name || region.name || '';
+
+                                    allCities.push(city);
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.warn(`加载国家失败: ${country.path}`, e);
+                    }
+                }
+            } catch (e) {
+                console.warn(`加载区域失败: ${region.path}`, e);
+            }
+        }
+
+        console.log(`✅ 总共加载 ${allCities.length} 个城市`);
+
+        // ====================== 关键部分：手动指定默认60个热门城市 ======================
+        const popularCityIds = [
+            "nyc", "lax", "chi", "hou", "tor", "van",     // 北美重要城市
+            "lon", "par", "ber", "rom", "mad",             // 欧洲
+            "bj", "sha", "tok", "sel", "sin", "dxb", "bom", // 亚洲
+            "syd", "mel",                                  // 大洋洲
+            // ====================== 你可以在这里继续添加想要默认显示的城市ID ======================
+            // 示例（根据你的实际城市ID添加）：
+            // "mex", "rio", "jnb", "cai", "mos", "ist", "del", "ban", ...
+        ];
+
+        // 1. 先把你指定的热门城市按顺序排在最前面
+        const popularList = [];
+        const idSet = new Set(popularCityIds);
+
+        popularCityIds.forEach(id => {
+            const city = allCities.find(c => c.id === id);
+            if (city) popularList.push(city);
+        });
+
+        // 2. 剩下的城市按名称字母排序，放在后面
+        const remaining = allCities
+            .filter(c => !idSet.has(c.id))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        // 3. 合并（热门在前，其余在后）
+        allCities = [...popularList, ...remaining];
+
+        // 4. 默认只取前60个作为 popularCities
+        popularCities = allCities.slice(0, 60);
+
+        console.log(`默认热门城市数量: ${popularCities.length}`);
+        console.log("默认显示的前5个城市:", popularCities.slice(0, 5).map(c => c.name));
+
+    } catch (e) {
+        console.error("加载城市列表失败", e);
+        allCities = [];
+        popularCities = [];
+    }
+}
+
+    const chartA = new DualMeteoApp('containerA', 'tooltipA', 'searchA', 'dropdownA', 'coordA', 'clockA', 'resA', 'humA');
+    const chartB = new DualMeteoApp('containerB', 'tooltipB', 'searchB', 'dropdownB', 'coordB', 'clockB', 'resB', 'humB');
+
+    window.onload = async () => {
+        await loadAllCities();
+        if (allCities.length > 0) {
+            const ny = allCities.find(c => c.id === "nyc") || allCities[0];
+            const tor = allCities.find(c => c.id === "tor") || allCities[1] || allCities[0];
+            chartA.loadCity(ny);
+            chartB.loadCity(tor);
+        }
+        setInterval(() => {
+            const t = new Date().toLocaleTimeString('zh-CN', {hour12: false});
+            document.getElementById('clockA').textContent = t;
+            document.getElementById('clockB').textContent = t;
+        }, 1000);
+    };
+</script>
+</body>
+</html>

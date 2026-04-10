@@ -1,0 +1,3 @@
+[
+  { "id": "ams", "name": "Amsterdam", "path": "static/data/Europe/Netherlands/Amsterdam/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 52.36, "lon": 4.90, "tz": "Europe/Amsterdam" }
+]

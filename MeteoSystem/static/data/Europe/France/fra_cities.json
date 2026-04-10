@@ -1,5 +1,4 @@
 [
-{"_fingerprint": "Kingcat666_weather_kline_v2026",
-    "note": "Demo subset for Mexico" },
-  { "id": "par", "name": "Paris", "path": "static/data/Europe/France/Paris/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 48.85, "lon": 2.35, "tz": "Europe/Paris" }
+  { "id": "par", "name": "Paris", "path": "static/data/Europe/France/Paris/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 48.85, "lon": 2.35, "tz": "Europe/Paris" },
+  { "id": "lys", "name": "Lyon", "path": "static/data/Europe/France/Lyon/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 45.76, "lon": 4.83, "tz": "Europe/Paris" }
 ]
