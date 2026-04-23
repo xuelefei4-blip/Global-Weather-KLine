@@ -1,8 +1,0 @@
-[
-  { "id": "nyc", "name": "New York", "path": "static/data/North_America/USA/New_York/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 40.71, "lon": -74.00, "tz": "America/New_York" },
-  { "id": "chi", "name": "Chicago", "path": "static/data/North_America/USA/Chicago/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 41.87, "lon": -87.62, "tz": "America/Chicago" },
-  { "id": "lax", "name": "Los Angeles", "path": "static/data/North_America/USA/Los_Angeles/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 34.05, "lon": -118.24, "tz": "America/Los_Angeles" },
-  { "id": "far", "name": "Fargo", "path": "static/data/North_America/USA/Fargo/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 46.87, "lon": -96.78, "tz": "America/Chicago" },
-  { "id": "wic", "name": "Wichita", "path": "static/data/North_America/USA/Wichita/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 37.68, "lon": -97.33, "tz": "America/Chicago" },
-  { "id": "des", "name": "Des Moines", "path": "static/data/North_America/USA/Des_Moines/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 41.58, "lon": -93.60, "tz": "America/Chicago" }
-]

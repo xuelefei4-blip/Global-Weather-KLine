@@ -1,5 +1,0 @@
-[
-  { "id": "sao", "name": "Sao Paulo", "path": "static/data/South_America/Brazil/Sao_Paulo/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -23.55, "lon": -46.63, "tz": "America/Sao_Paulo" },
-  { "id": "rio", "name": "Rio de Janeiro", "path": "static/data/South_America/Brazil/Rio/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -22.90, "lon": -43.17, "tz": "America/Sao_Paulo" },
-  { "id": "cam", "name": "Campinas", "path": "static/data/South_America/Brazil/Campinas/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -22.90, "lon": -47.06, "tz": "America/Sao_Paulo" }
-]

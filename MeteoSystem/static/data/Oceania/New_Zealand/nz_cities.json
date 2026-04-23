@@ -1,4 +1,0 @@
-[
-  { "id": "akl", "name": "Auckland", "path": "static/data/Oceania/New_Zealand/Auckland/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -36.84, "lon": 174.76, "tz": "Pacific/Auckland" },
-  { "id": "wlg", "name": "Wellington", "path": "static/data/Oceania/New_Zealand/Wellington/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -41.28, "lon": 174.77, "tz": "Pacific/Auckland" }
-]

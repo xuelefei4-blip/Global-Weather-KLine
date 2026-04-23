@@ -1,8 +1,0 @@
-{
-  "region": "North America",
-  "children": [
-    { "name": "USA", "path": "static/data/North_America/USA/usa_cities.json" },
-    { "name": "Canada", "path": "static/data/North_America/Canada/canada_cities.json" },
-    { "name": "Mexico", "path": "static/data/North_America/Mexico/mex_cities.json" }
-  ]
-}

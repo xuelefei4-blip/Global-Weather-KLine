@@ -1,7 +1,0 @@
-[
-  { "id": "bj", "name": "Beijing", "path": "static/data/Asia/China/Beijing/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 39.90, "lon": 116.40, "tz": "Asia/Shanghai" },
-  { "id": "sha", "name": "Shanghai", "path": "static/data/Asia/China/Shanghai/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 31.23, "lon": 121.47, "tz": "Asia/Shanghai" },
-  { "id": "hkg", "name": "Hong Kong", "path": "static/data/Asia/China/Hong_Kong/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 22.31, "lon": 114.16, "tz": "Asia/Hong_Kong" },
-  { "id": "hrb", "name": "Harbin", "path": "static/data/Asia/China/Harbin/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 45.75, "lon": 126.63, "tz": "Asia/Shanghai" },
-  { "id": "zgz", "name": "Zhengzhou", "path": "static/data/Asia/China/Zhengzhou/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 34.74, "lon": 113.66, "tz": "Asia/Shanghai" }
-]

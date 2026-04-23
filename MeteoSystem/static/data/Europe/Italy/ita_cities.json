@@ -1,4 +1,0 @@
-[
-  { "id": "rom", "name": "Rome", "path": "static/data/Europe/Italy/Rome/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 41.90, "lon": 12.49, "tz": "Europe/Rome" },
-  { "id": "mil", "name": "Milan", "path": "static/data/Europe/Italy/Milan/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 45.46, "lon": 9.19, "tz": "Europe/Rome" }
-]

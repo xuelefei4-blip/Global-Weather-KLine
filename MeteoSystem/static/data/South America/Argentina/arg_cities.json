@@ -1,4 +1,0 @@
-[
-  { "id": "bue", "name": "Buenos Aires", "path": "static/data/South_America/Argentina/Buenos_Aires/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -34.60, "lon": -58.38, "tz": "America/Argentina/Buenos_Aires" },
-  { "id": "ros", "name": "Rosario", "path": "static/data/South_America/Argentina/Rosario/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -32.95, "lon": -60.64, "tz": "America/Argentina/Buenos_Aires" }
-]

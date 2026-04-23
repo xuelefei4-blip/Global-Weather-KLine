@@ -1,8 +1,0 @@
-{
-  "region": "Oceania",
-  "children": [
-    { "name": "Australia", "path": "static/data/Oceania/Australia/aus_cities.json" },
-    { "name": "New Zealand", "path": "static/data/Oceania/New_Zealand/nz_cities.json" },
-    { "name": "Fiji", "path": "static/data/Oceania/Fiji/fji_cities.json" }
-  ]
-}

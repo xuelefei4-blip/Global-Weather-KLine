@@ -1,4 +1,0 @@
-[
-  { "id": "mow", "name": "Moscow", "path": "static/data/Europe/Russia/Moscow/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 55.75, "lon": 37.61, "tz": "Europe/Moscow" },
-  { "id": "rov", "name": "Rostov-on-Don", "path": "static/data/Europe/Russia/Rostov/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 47.23, "lon": 39.70, "tz": "Europe/Moscow" }
-]

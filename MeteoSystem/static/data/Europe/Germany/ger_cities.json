@@ -1,4 +1,0 @@
-[
-  { "id": "ber", "name": "Berlin", "path": "static/data/Europe/Germany/Berlin/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 52.52, "lon": 13.40, "tz": "Europe/Berlin" },
-  { "id": "ham", "name": "Hamburg", "path": "static/data/Europe/Germany/Hamburg/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 53.55, "lon": 9.99, "tz": "Europe/Berlin" }
-]
