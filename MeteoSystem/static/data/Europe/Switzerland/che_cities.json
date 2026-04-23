@@ -1,0 +1,3 @@
+[
+  { "id": "zrh", "name": "Zurich", "path": "static/data/Europe/Switzerland/Zurich/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": 47.37, "lon": 8.54, "tz": "Europe/Zurich" }
+]

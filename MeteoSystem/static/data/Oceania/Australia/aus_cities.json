@@ -1,0 +1,6 @@
+[
+  { "id": "syd", "name": "Sydney", "path": "static/data/Oceania/Australia/Sydney/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -33.86, "lon": 151.20, "tz": "Australia/Sydney" },
+  { "id": "mel", "name": "Melbourne", "path": "static/data/Oceania/Australia/Melbourne/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -37.81, "lon": 144.96, "tz": "Australia/Melbourne" },
+  { "id": "per", "name": "Perth", "path": "static/data/Oceania/Australia/Perth/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -31.95, "lon": 115.86, "tz": "Australia/Perth" },
+  { "id": "adl", "name": "Adelaide", "path": "static/data/Oceania/Australia/Adelaide/", "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026], "lat": -34.92, "lon": 138.60, "tz": "Australia/Adelaide" }
+]
