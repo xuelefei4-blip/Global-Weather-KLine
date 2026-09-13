@@ -1,0 +1,69 @@
+{
+  "United Kingdom": {
+    "Edinburgh": "edi",
+    "Belfast": "bfs",
+    "London": "lon",
+    "Manchester": "man"
+  },
+  "France": {
+    "Marseille": "mrs",
+    "Nice": "nce",
+    "Paris": "par",
+    "Lyon": "lys"
+  },
+  "Germany": {
+    "Munich": "muc",
+    "Frankfurt": "fra",
+    "Berlin": "ber",
+    "Hamburg": "ham"
+  },
+  "Italy": {
+    "Naples": "nap",
+    "Venice": "vce",
+    "Rome": "rom",
+    "Milan": "mil"
+  },
+  "Spain": {
+    "Barcelona": "bcn",
+    "Madrid": "mad",
+    "Seville": "sev",
+    "Cordoba": "cor"
+  },
+  "Russia": {
+    "Saint Petersburg": "led",
+    "Novosibirsk": "ovb",
+    "Vladivostok": "vvo",
+    "Moscow": "mow",
+    "Rostov-on-Don": "rov"
+  },
+  "Ukraine": {
+    "Kyiv": "iev",
+    "Odesa": "ods"
+  },
+  "Netherlands": {
+    "Rotterdam": "rtm",
+    "Amsterdam": "ams"
+  },
+  "Switzerland": {
+    "Geneva": "gva",
+    "Zurich": "zrh"
+  },
+  "Norway": {
+    "Oslo": "osl",
+    "Bergen": "bgo",
+    "Tromso": "tos",
+    "Longyearbyen": "lyr"
+  },
+  "Sweden": {
+    "Stockholm": "arn"
+  },
+  "Iceland": {
+    "Reykjavik": "kef"
+  },
+  "Greece": {
+    "Athens": "ath"
+  },
+  "Austria": {
+    "Vienna": "vie"
+  }
+}

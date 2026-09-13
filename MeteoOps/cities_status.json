@@ -1,0 +1,782 @@
+{
+  "updated": [
+    {
+      "name": "Beijing",
+      "id": "bj",
+      "year": "2026"
+    },
+    {
+      "name": "Shanghai",
+      "id": "sha",
+      "year": "2026"
+    },
+    {
+      "name": "Hong Kong",
+      "id": "hkg",
+      "year": "2026"
+    },
+    {
+      "name": "Harbin",
+      "id": "hrb",
+      "year": "2026"
+    },
+    {
+      "name": "Zhengzhou",
+      "id": "zgz",
+      "year": "2026"
+    },
+    {
+      "name": "Sapporo",
+      "id": "cts",
+      "year": "2026"
+    },
+    {
+      "name": "Tokyo",
+      "id": "tok",
+      "year": "2026"
+    },
+    {
+      "name": "Osaka",
+      "id": "osa",
+      "year": "2026"
+    },
+    {
+      "name": "Seoul",
+      "id": "sel",
+      "year": "2026"
+    },
+    {
+      "name": "Mumbai",
+      "id": "bom",
+      "year": "2026"
+    },
+    {
+      "name": "Delhi",
+      "id": "del",
+      "year": "2026"
+    },
+    {
+      "name": "Ludhiana",
+      "id": "lud",
+      "year": "2026"
+    },
+    {
+      "name": "Singapore",
+      "id": "sin",
+      "year": "2026"
+    },
+    {
+      "name": "Bangkok",
+      "id": "bkk",
+      "year": "2026"
+    },
+    {
+      "name": "Ho Chi Minh City",
+      "id": "hcm",
+      "year": "2026"
+    },
+    {
+      "name": "Jakarta",
+      "id": "jkt",
+      "year": "2026"
+    },
+    {
+      "name": "Manila",
+      "id": "mnl",
+      "year": "2026"
+    },
+    {
+      "name": "Kuala Lumpur",
+      "id": "kul",
+      "year": "2026"
+    },
+    {
+      "name": "Dubai",
+      "id": "dxb",
+      "year": "2026"
+    },
+    {
+      "name": "Riyadh",
+      "id": "riy",
+      "year": "2026"
+    },
+    {
+      "name": "London",
+      "id": "lon",
+      "year": "2026"
+    },
+    {
+      "name": "Manchester",
+      "id": "man",
+      "year": "2026"
+    },
+    {
+      "name": "Paris",
+      "id": "par",
+      "year": "2026"
+    },
+    {
+      "name": "Lyon",
+      "id": "lys",
+      "year": "2026"
+    },
+    {
+      "name": "Berlin",
+      "id": "ber",
+      "year": "2026"
+    },
+    {
+      "name": "Hamburg",
+      "id": "ham",
+      "year": "2026"
+    },
+    {
+      "name": "Naples",
+      "id": "nap",
+      "year": "2026"
+    },
+    {
+      "name": "Rome",
+      "id": "rom",
+      "year": "2026"
+    },
+    {
+      "name": "Milan",
+      "id": "mil",
+      "year": "2026"
+    },
+    {
+      "name": "Madrid",
+      "id": "mad",
+      "year": "2026"
+    },
+    {
+      "name": "Seville",
+      "id": "sev",
+      "year": "2026"
+    },
+    {
+      "name": "Cordoba",
+      "id": "cor",
+      "year": "2026"
+    },
+    {
+      "name": "Moscow",
+      "id": "mow",
+      "year": "2026"
+    },
+    {
+      "name": "Rostov-on-Don",
+      "id": "rov",
+      "year": "2026"
+    },
+    {
+      "name": "Kyiv",
+      "id": "iev",
+      "year": "2026"
+    },
+    {
+      "name": "Odesa",
+      "id": "ods",
+      "year": "2026"
+    },
+    {
+      "name": "Amsterdam",
+      "id": "ams",
+      "year": "2026"
+    },
+    {
+      "name": "Zurich",
+      "id": "zrh",
+      "year": "2026"
+    },
+    {
+      "name": "New York",
+      "id": "nyc",
+      "year": "2026"
+    },
+    {
+      "name": "Chicago",
+      "id": "chi",
+      "year": "2026"
+    },
+    {
+      "name": "Los Angeles",
+      "id": "lax",
+      "year": "2026"
+    },
+    {
+      "name": "Fargo",
+      "id": "far",
+      "year": "2026"
+    },
+    {
+      "name": "Wichita",
+      "id": "wic",
+      "year": "2026"
+    },
+    {
+      "name": "Des Moines",
+      "id": "des",
+      "year": "2026"
+    },
+    {
+      "name": "Calgary",
+      "id": "yyc",
+      "year": "2026"
+    },
+    {
+      "name": "Toronto",
+      "id": "tor",
+      "year": "2026"
+    },
+    {
+      "name": "Vancouver",
+      "id": "van",
+      "year": "2026"
+    },
+    {
+      "name": "Saskatoon",
+      "id": "sas",
+      "year": "2026"
+    },
+    {
+      "name": "Winnipeg",
+      "id": "wpg",
+      "year": "2026"
+    },
+    {
+      "name": "Mexico City",
+      "id": "mex",
+      "year": "2026"
+    },
+    {
+      "name": "Sao Paulo",
+      "id": "sao",
+      "year": "2026"
+    },
+    {
+      "name": "Rio de Janeiro",
+      "id": "rio",
+      "year": "2026"
+    },
+    {
+      "name": "Campinas",
+      "id": "cam",
+      "year": "2026"
+    },
+    {
+      "name": "Cordoba",
+      "id": "cor",
+      "year": "2026"
+    },
+    {
+      "name": "Buenos Aires",
+      "id": "bue",
+      "year": "2026"
+    },
+    {
+      "name": "Rosario",
+      "id": "ros",
+      "year": "2026"
+    },
+    {
+      "name": "Santiago",
+      "id": "scl",
+      "year": "2026"
+    },
+    {
+      "name": "Bogota",
+      "id": "bog",
+      "year": "2026"
+    },
+    {
+      "name": "Lima",
+      "id": "lim",
+      "year": "2026"
+    },
+    {
+      "name": "Cairo",
+      "id": "cai",
+      "year": "2026"
+    },
+    {
+      "name": "Alexandria",
+      "id": "aly",
+      "year": "2026"
+    },
+    {
+      "name": "Johannesburg",
+      "id": "jnb",
+      "year": "2026"
+    },
+    {
+      "name": "Cape Town",
+      "id": "cpt",
+      "year": "2026"
+    },
+    {
+      "name": "Lagos",
+      "id": "los",
+      "year": "2026"
+    },
+    {
+      "name": "Nairobi",
+      "id": "nbo",
+      "year": "2026"
+    },
+    {
+      "name": "Casablanca",
+      "id": "cas",
+      "year": "2026"
+    },
+    {
+      "name": "Addis Ababa",
+      "id": "add",
+      "year": "2026"
+    },
+    {
+      "name": "Darwin",
+      "id": "drw",
+      "year": "2026"
+    },
+    {
+      "name": "Sydney",
+      "id": "syd",
+      "year": "2026"
+    },
+    {
+      "name": "Melbourne",
+      "id": "mel",
+      "year": "2026"
+    },
+    {
+      "name": "Perth",
+      "id": "per",
+      "year": "2026"
+    },
+    {
+      "name": "Adelaide",
+      "id": "adl",
+      "year": "2026"
+    },
+    {
+      "name": "Christchurch",
+      "id": "chc",
+      "year": "2026"
+    },
+    {
+      "name": "Auckland",
+      "id": "akl",
+      "year": "2026"
+    },
+    {
+      "name": "Wellington",
+      "id": "wlg",
+      "year": "2026"
+    },
+    {
+      "name": "Suva",
+      "id": "suv",
+      "year": "2026"
+    }
+  ],
+  "current": [],
+  "pending": [
+    {
+      "name": "Guangzhou",
+      "id": "can",
+      "year": ""
+    },
+    {
+      "name": "Shenzhen",
+      "id": "szx",
+      "year": ""
+    },
+    {
+      "name": "Chengdu",
+      "id": "ctu",
+      "year": ""
+    },
+    {
+      "name": "Wuhan",
+      "id": "wuh",
+      "year": ""
+    },
+    {
+      "name": "Lhasa",
+      "id": "lxa",
+      "year": ""
+    },
+    {
+      "name": "Urumqi",
+      "id": "urc",
+      "year": ""
+    },
+    {
+      "name": "Kunming",
+      "id": "kmg",
+      "year": ""
+    },
+    {
+      "name": "Haikou",
+      "id": "hak",
+      "year": ""
+    },
+    {
+      "name": "Fukuoka",
+      "id": "fuk",
+      "year": ""
+    },
+    {
+      "name": "Naha",
+      "id": "oka",
+      "year": ""
+    },
+    {
+      "name": "Busan",
+      "id": "pus",
+      "year": ""
+    },
+    {
+      "name": "Jeju",
+      "id": "cju",
+      "year": ""
+    },
+    {
+      "name": "Kolkata",
+      "id": "ccu",
+      "year": ""
+    },
+    {
+      "name": "Bengaluru",
+      "id": "blr",
+      "year": ""
+    },
+    {
+      "name": "Chiang Mai",
+      "id": "cnx",
+      "year": ""
+    },
+    {
+      "name": "Phuket",
+      "id": "hkt",
+      "year": ""
+    },
+    {
+      "name": "Hanoi",
+      "id": "han",
+      "year": ""
+    },
+    {
+      "name": "Denpasar",
+      "id": "dps",
+      "year": ""
+    },
+    {
+      "name": "Abu Dhabi",
+      "id": "auh",
+      "year": ""
+    },
+    {
+      "name": "Jeddah",
+      "id": "jed",
+      "year": ""
+    },
+    {
+      "name": "Istanbul",
+      "id": "ist",
+      "year": ""
+    },
+    {
+      "name": "Ankara",
+      "id": "ank",
+      "year": ""
+    },
+    {
+      "name": "Astana",
+      "id": "nqx",
+      "year": ""
+    },
+    {
+      "name": "Almaty",
+      "id": "ala",
+      "year": ""
+    },
+    {
+      "name": "Edinburgh",
+      "id": "edi",
+      "year": ""
+    },
+    {
+      "name": "Belfast",
+      "id": "bfs",
+      "year": ""
+    },
+    {
+      "name": "Marseille",
+      "id": "mrs",
+      "year": ""
+    },
+    {
+      "name": "Nice",
+      "id": "nce",
+      "year": ""
+    },
+    {
+      "name": "Munich",
+      "id": "muc",
+      "year": ""
+    },
+    {
+      "name": "Frankfurt",
+      "id": "fra",
+      "year": ""
+    },
+    {
+      "name": "Venice",
+      "id": "vce",
+      "year": ""
+    },
+    {
+      "name": "Barcelona",
+      "id": "bcn",
+      "year": ""
+    },
+    {
+      "name": "Saint Petersburg",
+      "id": "led",
+      "year": ""
+    },
+    {
+      "name": "Novosibirsk",
+      "id": "ovb",
+      "year": ""
+    },
+    {
+      "name": "Vladivostok",
+      "id": "vvo",
+      "year": ""
+    },
+    {
+      "name": "Rotterdam",
+      "id": "rtm",
+      "year": ""
+    },
+    {
+      "name": "Geneva",
+      "id": "gva",
+      "year": ""
+    },
+    {
+      "name": "Oslo",
+      "id": "osl",
+      "year": ""
+    },
+    {
+      "name": "Bergen",
+      "id": "bgo",
+      "year": ""
+    },
+    {
+      "name": "Tromso",
+      "id": "tos",
+      "year": ""
+    },
+    {
+      "name": "Longyearbyen",
+      "id": "lyr",
+      "year": ""
+    },
+    {
+      "name": "Stockholm",
+      "id": "arn",
+      "year": ""
+    },
+    {
+      "name": "Reykjavik",
+      "id": "kef",
+      "year": ""
+    },
+    {
+      "name": "Athens",
+      "id": "ath",
+      "year": ""
+    },
+    {
+      "name": "Vienna",
+      "id": "vie",
+      "year": ""
+    },
+    {
+      "name": "Houston",
+      "id": "iah",
+      "year": ""
+    },
+    {
+      "name": "Phoenix",
+      "id": "phx",
+      "year": ""
+    },
+    {
+      "name": "Miami",
+      "id": "mia",
+      "year": ""
+    },
+    {
+      "name": "Seattle",
+      "id": "sea",
+      "year": ""
+    },
+    {
+      "name": "Denver",
+      "id": "den",
+      "year": ""
+    },
+    {
+      "name": "Anchorage",
+      "id": "anc",
+      "year": ""
+    },
+    {
+      "name": "Honolulu",
+      "id": "hnl",
+      "year": ""
+    },
+    {
+      "name": "Montreal",
+      "id": "yul",
+      "year": ""
+    },
+    {
+      "name": "Yellowknife",
+      "id": "yzf",
+      "year": ""
+    },
+    {
+      "name": "Cancun",
+      "id": "cun",
+      "year": ""
+    },
+    {
+      "name": "Guadalajara",
+      "id": "gdl",
+      "year": ""
+    },
+    {
+      "name": "Havana",
+      "id": "hav",
+      "year": ""
+    },
+    {
+      "name": "Panama City",
+      "id": "pty",
+      "year": ""
+    },
+    {
+      "name": "Nuuk",
+      "id": "goh",
+      "year": ""
+    },
+    {
+      "name": "Brasilia",
+      "id": "bsb",
+      "year": ""
+    },
+    {
+      "name": "Manaus",
+      "id": "mao",
+      "year": ""
+    },
+    {
+      "name": "Ushuaia",
+      "id": "ush",
+      "year": ""
+    },
+    {
+      "name": "Punta Arenas",
+      "id": "puq",
+      "year": ""
+    },
+    {
+      "name": "Medellin",
+      "id": "mde",
+      "year": ""
+    },
+    {
+      "name": "Cusco",
+      "id": "cuz",
+      "year": ""
+    },
+    {
+      "name": "Quito",
+      "id": "uio",
+      "year": ""
+    },
+    {
+      "name": "Durban",
+      "id": "dur",
+      "year": ""
+    },
+    {
+      "name": "Abuja",
+      "id": "abv",
+      "year": ""
+    },
+    {
+      "name": "Mombasa",
+      "id": "mba",
+      "year": ""
+    },
+    {
+      "name": "Marrakech",
+      "id": "rak",
+      "year": ""
+    },
+    {
+      "name": "Antananarivo",
+      "id": "tnr",
+      "year": ""
+    },
+    {
+      "name": "Algiers",
+      "id": "alg",
+      "year": ""
+    },
+    {
+      "name": "Brisbane",
+      "id": "bne",
+      "year": ""
+    },
+    {
+      "name": "Hobart",
+      "id": "hba",
+      "year": ""
+    },
+    {
+      "name": "Port Moresby",
+      "id": "pom",
+      "year": ""
+    },
+    {
+      "name": "McMurdo Station",
+      "id": "mcm",
+      "year": ""
+    },
+    {
+      "name": "Amundsen-Scott Station",
+      "id": "spx",
+      "year": ""
+    },
+    {
+      "name": "Vostok Station",
+      "id": "vos",
+      "year": ""
+    },
+    {
+      "name": "Esperanza Base",
+      "id": "esp",
+      "year": ""
+    }
+  ]
+}

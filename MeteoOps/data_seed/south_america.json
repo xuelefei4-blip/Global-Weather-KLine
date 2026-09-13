@@ -1,0 +1,30 @@
+{
+  "Brazil": {
+    "Brasilia": "bsb",
+    "Manaus": "mao",
+    "Sao Paulo": "sao",
+    "Rio de Janeiro": "rio",
+    "Campinas": "cam"
+  },
+  "Argentina": {
+    "Cordoba": "cor",
+    "Ushuaia": "ush",
+    "Buenos Aires": "bue",
+    "Rosario": "ros"
+  },
+  "Chile": {
+    "Punta Arenas": "puq",
+    "Santiago": "scl"
+  },
+  "Colombia": {
+    "Medellin": "mde",
+    "Bogota": "bog"
+  },
+  "Peru": {
+    "Cusco": "cuz",
+    "Lima": "lim"
+  },
+  "Ecuador": {
+    "Quito": "uio"
+  }
+}
