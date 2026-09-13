@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="EN-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Meteorology Monitor</title>
+    <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
+    <meta name="author" content="Kingcat66695111">
+    <meta name="version" content="1.0.20260328">
+    <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
+    <meta name="robots" content="index,follow">
+    
+    <!-- 第三方图标与依赖库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+
+    <!-- 引用独立全局样式表 (支持双皮肤换肤) -->
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+    <div class="main-floating-title">Meteorological Monitor</div>
+
+    <div id="chart-wrapper">
+        <img src="static/images/pixel-hamster.png" class="pixel-hamster" alt="hamster">
+
+        <div class="header-panel">
+            <div class="btn-group">
+                <label><input type="radio" name="res" value="H"><span>H</span></label>
+                <label><input type="radio" name="res" value="D" checked><span>D</span></label>
+                <label><input type="radio" name="res" value="W"><span>W</span></label>
+                <label><input type="radio" name="res" value="M"><span>M</span></label>
+                <label><input type="radio" name="res" value="Y"><span>Y</span></label>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button id="theme-toggle" class="theme-toggle-btn">
+                    <i class="fa-solid fa-moon"></i> <span>Dark</span>
+                </button>
+                <button id="lab-btn" class="lab-btn">Compare Lab ➔</button>
+                <div class="btn-group">
+                    <label><input type="checkbox" id="hum-check" checked><span>Humidity %</span></label>
+                    <label><span class="btn-disabled">Pressure</span></label>
+                    <label><span class="btn-disabled">Wind</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-chart-container">
+            <div id="tooltip" class="custom-tooltip"></div>
+        </div>
+    </div>
+
+    <div class="social-links">
+        <a href="https://twitter.com/intent/tweet?text=Global%20Climate%20Monitor" target="_blank" title="Share on X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://www.reddit.com/submit?title=Global%20Meteorology%20Monitor%20using%20K-Line" target="_blank" title="Share on Reddit"><i class="fa-brands fa-reddit-alien"></i></a>
+        <a href="https://github.com" target="_blank" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
+    </div>
+
+    <div class="footer-panel">
+        <div class="footer-row">
+            <div class="footer-item">
+                <span>Search & Select Location</span>
+                <input 
+                    type="text" 
+                    id="location-search-input" 
+                    class="city-select" 
+                    list="city-list" 
+                    placeholder="Type city name..." 
+                    style="width: 200px;"
+                    autocomplete="off"
+                >
+                <input type="hidden" id="location-selector">
+                <datalist id="city-list"></datalist>
+            </div>
+
+            <div class="footer-item" style="text-align: center;">
+                <span>Coordinates</span>
+                <b id="coord-display">--° N, --° W</b>
+            </div>
+
+            <div class="footer-item" style="text-align: right;">
+                <span>Local Time</span>
+                <b id="local-clock">00:00:00</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-copyright">
+        © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
+        Version: 2026.03.28 • Built with passion for understanding climate change<br>
+        Educational & Non-commercial use only. Commercial use requires permission.<br>
+        If this tool helped you, consider supporting it → 
+        <a href="https://ko-fi.com/kingcat666" target="_blank" style="color:#00ff7f; text-decoration:none;">Ko-fi</a>
+        • Visualizing climate through time-series analysis
+    </div>
+
+    <div id="globe-container"></div>
+    <div id="selected-city-display">Loading...</div>
+
+    <script>
+        const fullYears = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
+        const major_cities = [
+            { name: "New York", id: "nyc", lat: 40.71, lon: -74.00, tz: "America/New_York", path: "static/data/North_America/USA/New_York/", years: fullYears },
+            { name: "Los Angeles", id: "lax", lat: 34.05, lon: -118.24, tz: "America/Los_Angeles", path: "static/data/North_America/USA/Los_Angeles/", years: fullYears },
+            { name: "Chicago", id: "chi", lat: 41.87, lon: -87.62, tz: "America/Chicago", path: "static/data/North_America/USA/Chicago/", years: fullYears },
+            { name: "Toronto", id: "tor", lat: 43.65, lon: -79.38, tz: "America/Toronto", path: "static/data/North_America/Canada/Toronto/", years: fullYears },
+            { name: "London", id: "lon", lat: 51.50, lon: -0.12, tz: "Europe/United_Kingdom/London/", years: fullYears },
+            { name: "Paris", id: "par", lat: 48.85, lon: 2.35, tz: "Europe/France/Paris/", years: fullYears },
+            { name: "Berlin", id: "ber", lat: 52.52, lon: 13.40, tz: "Europe/Germany/Berlin/", years: fullYears },
+            { name: "Beijing", id: "bj", lat: 39.90, lon: 116.40, tz: "Asia/China/Beijing/", years: fullYears },
+            { name: "Tokyo", id: "tok", lat: 35.68, lon: 139.76, tz: "Asia/Japan/Tokyo/", years: fullYears },
+            { name: "Sydney", id: "syd", lat: -33.86, lon: 151.20, tz: "Australia/Sydney", path: "static/data/Oceania/Australia/Sydney/", years: fullYears }
+        ];
+
+        function formatStaticPath(p) {
+            if (!p) return "";
+            let path = p.trim().replace(/\\/g, '/');
+            if (path.startsWith('/')) path = path.slice(1);
+            if (!path.startsWith('static/')) path = 'static/' + path;
+            return path.replace(/\/+/g, '/');
+        }
+
+        class ThemeManager {
+            constructor(chart) {
+                this.chart = chart;
+                this.btn = document.getElementById('theme-toggle');
+                this.init();
+            }
+            init() {
+                const isLight = localStorage.getItem('meteo_theme') === 'light';
+                if (isLight) document.body.classList.add('light-theme');
+                this._updateBtn(isLight);
+                this._updateChart(isLight);
+                if (this.btn) this.btn.onclick = () => this.toggle();
+            }
+            toggle() {
+                const isLight = document.body.classList.toggle('light-theme');
+                localStorage.setItem('meteo_theme', isLight ? 'light' : 'dark');
+                this._updateBtn(isLight);
+                this._updateChart(isLight);
+            }
+            _updateBtn(isLight) {
+                if (!this.btn) return;
+                this.btn.innerHTML = isLight
+                    ? `<i class="fa-solid fa-sun" style="color:#eab308"></i> <span>Light</span>`
+                    : `<i class="fa-solid fa-moon"></i> <span>Dark</span>`;
+            }
+            _updateChart(isLight) {
+                if (!this.chart) return;
+                const textColor = isLight ? '#4b5563' : '#8e94a5';
+                const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)';
+                const borderColor = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)';
+                this.chart.applyOptions({
+                    layout: { textColor },
+                    grid: { vertLines: { color: gridColor }, horzLines: { color: gridColor } },
+                    timeScale: { borderColor },
+                    leftPriceScale: { borderColor }
+                });
+            }
+        }
+
+        class MeteoApp {
+            constructor() {
+                this.dataCache = new Map();
+                this.rawData = [];
+                this.locationConfig = {};
+                this.cityList = [];
+                this.chartIns = null;
+                this.globeIns = null;
+                this.series = {};
+
+                this.dom = {
+                    container: document.getElementById('main-chart-container'),
+                    selector: document.getElementById('location-selector'),
+                    clock: document.getElementById('local-clock'),
+                    coord: document.getElementById('coord-display'),
+                    tooltip: document.getElementById('tooltip'),
+                    humCheck: document.getElementById('hum-check')
+                };
+            }
+
+            async init() {
+                this._initChart();
+                this._initGlobe();
+                new ThemeManager(this.chartIns);
+                await this._loadIndex();
+                this._bindEvents();
+                this._startClock();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const cityId = urlParams.get('city');
+
+                if (cityId && this.locationConfig[cityId.toLowerCase().trim()]) {
+                    this.dom.selector.value = cityId.toLowerCase().trim();
+                } else if (this.cityList.length > 0) {
+                    this.dom.selector.value = this.cityList[0].id;
+                }
+
+                setTimeout(() => {
+                    this.changeLocation();
+                }, 100);
+            }
+
+            _initChart() {
+                this.chartIns = LightweightCharts.createChart(this.dom.container, {
+                    layout: { background: { color: 'transparent' }, textColor: '#8e94a5', fontSize: 10 },
+                    grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
+                    crosshair: {
+                        mode: LightweightCharts.CrosshairMode.Normal, 
+                        vertLine: { visible: true, labelVisible: true, style: 2, width: 1, color: 'rgba(255, 255, 255, 0.4)' },
+                        horzLine: { visible: true, labelVisible: true, style: 2, width: 1, color: 'rgba(255, 255, 255, 0.4)' }
+                    },
+                    localization: {
+                        timeFormatter: (t) => {
+                            const d = new Date(t * 1000);
+                            return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:00`;
+                        }
+                    },
+                    timeScale: { 
+                        borderColor: 'rgba(255,255,255,0.1)', timeVisible: true,
+                        tickMarkFormatter: (t) => {
+                            const d = new Date(t * 1000);
+                            return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+                        }
+                    },
+                    leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.1)', scaleMargins: { top: 0.05, bottom: 0.25 } }
+                });
+
+                this.chartIns.applyOptions({
+                    watermark: { visible: true, text: "© Kingcat66695111", fontSize: 11, color: "rgba(255, 255, 255, 0.1)", horzAlign: "right", vertAlign: "bottom" }
+                });
+
+                this.series.candle = this.chartIns.addCandlestickSeries({
+                    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, priceLineVisible: true, lastValueVisible: true, priceScaleId: 'left',
+                    priceFormat: { type: 'custom', formatter: (p) => (p > 0 ? '+' : '') + p.toFixed(1) + '℃' }
+                });
+
+                this.series.hLine = this.chartIns.addLineSeries({
+                    color: '#C0392B', lineWidth: 2, priceScaleId: 'left', visible: false, lastValueVisible: false, priceLineVisible: false
+                });
+
+                this.series.vol = this.chartIns.addHistogramSeries({
+                    priceScaleId: 'vol-scale', visible: true,
+                    priceFormat: { type: 'custom', formatter: (p) => p.toFixed(1) + '%' }
+                });
+
+                this.chartIns.priceScale('vol-scale').applyOptions({
+                    visible: true, position: 'right', borderVisible: false, drawTicks: false, scaleMargins: { top: 0.85, bottom: 0 }, textColor: 'transparent'
+                });
+
+                this.series.vol.createPriceLine({ price: 35, color: '#f44336', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'DRT' });
+                this.chartIns.subscribeCrosshairMove(p => this._handleTooltip(p));
+            }
+
+            _initGlobe() {
+                try {
+                    const el = document.getElementById('globe-container');
+                    if (!el || typeof Globe === 'undefined') return;
+                    this.globeIns = Globe()(el)
+                        .globeImageUrl('static/images/earth-blue-marble.jpg')
+                        .backgroundColor('rgba(0,0,0,0)').width(100).height(100)
+                        .globeCurvatureResolution(0.5).pointResolution(12)
+                        .ringColor(() => '#FEFAE0').ringMaxRadius(3).ringPropagationSpeed(1).ringRepeatPeriod(1800);
+
+                    const orbitControls = this.globeIns.controls();
+                    if (orbitControls) {
+                        orbitControls.autoRotate = true;
+                        orbitControls.autoRotateSpeed = 0.3;
+                    }
+                } catch(e) { console.warn("Globe fallback", e); }
+            }
+
+            async _loadIndex() {
+                try {
+                    major_cities.forEach(city => {
+                        const cid = city.id.toLowerCase().trim();
+                        this.cityList.push(city);
+                        this.locationConfig[cid] = city;
+                        this._addCityToUI(city);
+                    });
+
+                    const res = await fetch("static/data/index.json");
+                    if (!res.ok) return;
+                    const data = await res.json();
+
+                    const visited = new Set();
+                    const recursiveLoad = async (items) => {
+                        const list = Array.isArray(items) ? items : (items.children || []);
+                        for (let it of list) {
+                            if (it.path && it.path.endsWith('.json') && !it.id) {
+                                const subPath = formatStaticPath(it.path);
+                                if (!visited.has(subPath)) {
+                                    visited.add(subPath);
+                                    const r = await fetch(subPath);
+                                    if (r.ok) await recursiveLoad(await r.json());
+                                }
+                            } else if (it.id && it.name) {
+                                const cid = it.id.toLowerCase().trim();
+                                if (this.locationConfig[cid]) {
+                                    Object.assign(this.locationConfig[cid], it);
+                                } else {
+                                    it.id = cid;
+                                    this.cityList.push(it);
+                                    this.locationConfig[cid] = it;
+                                    this._addCityToUI(it);
+                                }
+                            }
+                        }
+                    };
+                    await recursiveLoad(data);
+                } catch (e) {
+                    console.warn("Index load fallback:", e);
+                }
+            }
+
+            _addCityToUI(city) {
+                if (!city.id) return;
+                const listDom = document.getElementById('city-list');
+                if (!listDom) return;
+                const opt = document.createElement('option');
+                opt.value = city.name;
+                listDom.appendChild(opt);
+            }
+
+            _bindEvents() {
+                document.getElementById('lab-btn').onclick = () => {
+                    window.location.href = './lab.html';
+                };
+
+                document.querySelectorAll('input[name="res"]').forEach(r => {
+                    r.onchange = () => this.updateView();
+                });
+
+                this.dom.humCheck.onchange = () => {
+                    this.series.vol.applyOptions({ visible: this.dom.humCheck.checked });
+                };
+
+                const searchInput = document.getElementById('location-search-input');
+                const triggerSearch = () => {
+                    const val = searchInput.value.trim().toLowerCase();
+                    if (!val) return;
+                    const match = this.cityList.find(c => (c.name && c.name.toLowerCase() === val) || (c.name && c.name.toLowerCase().includes(val)) || (c.id && c.id.toLowerCase() === val));
+                    if (match) {
+                        this.dom.selector.value = match.id;
+                        this.changeLocation();
+                    }
+                };
+
+                searchInput.addEventListener('input', () => {
+                    const val = searchInput.value.trim().toLowerCase();
+                    if (val.length >= 2) triggerSearch();
+                });
+
+                searchInput.addEventListener('change', triggerSearch);
+                searchInput.onclick = () => { searchInput.value = ''; };
+            }
+
+            async changeLocation() {
+                const id = this.dom.selector.value;
+                const city = this.locationConfig[id];
+                if (!city) return;
+
+                this.dom.container.style.opacity = 0.4;
+                this.dom.coord.innerText = "Loading " + (city.name || id) + "...";
+
+                try {
+                    if (this.dataCache.has(id)) {
+                        this.rawData = this.dataCache.get(id);
+                    } else {
+                        const years = city.years || fullYears;
+                        let cityPath = formatStaticPath(city.path || '');
+                        if (!cityPath.endsWith('/')) cityPath += '/';
+
+                        const results = await Promise.allSettled(
+                            years.map(y => fetch(`${cityPath}${city.id}_${y}.json`).then(r => r.ok ? r.json() : null).catch(() => null))
+                        );
+
+                        this.rawData = [];
+                        results.forEach(res => {
+                            if (res.status === 'fulfilled' && res.value) {
+                                const chunk = res.value.values || res.value;
+                                if (Array.isArray(chunk)) this.rawData = this.rawData.concat(chunk);
+                            }
+                        });
+
+                        this.rawData.sort((a, b) => a.time - b.time);
+                        this.rawData = this.rawData.filter((it, idx, arr) => idx === 0 || it.time > arr[idx-1].time);
+                        if (this.rawData.length > 0) this.dataCache.set(id, [...this.rawData]);
+                    }
+
+                    const latDir = city.lat >= 0 ? 'N' : 'S';
+                    const lonDir = city.lon >= 0 ? 'E' : 'W';
+                    this.dom.coord.innerText = `${Math.abs(city.lat)}° ${latDir}, ${Math.abs(city.lon)}° ${lonDir}`;
+
+                    if (this.globeIns) {
+                        try {
+                            this.globeIns.ringsData([{ lat: city.lat, lng: city.lon }]);
+                            this.globeIns.pointOfView({ lat: city.lat, lng: city.lon, altitude: 2 }, 800);
+                        } catch(e) {}
+                    }
+
+                    this.updateView();
+
+                    const searchInput = document.getElementById('location-search-input');
+                    if (searchInput) searchInput.value = city.name;
+
+                    const cityDisplay = document.getElementById('selected-city-display');
+                    if (cityDisplay) cityDisplay.textContent = city.name || '';
+                } catch (e) {
+                    console.error("Data fetch failed:", e);
+                    this.dom.coord.innerText = "Load failed";
+                } finally {
+                    this.dom.container.style.opacity = 1;
+                    history.replaceState(null, "", `?city=${id}`);
+                }
+            }
+
+            updateView() {
+                const resType = document.querySelector('input[name="res"]:checked').value;
+                const processed = this._aggregate(this.rawData, resType);
+
+                // 关键：先显式清空旧数据，防止多周期切换时图表内部时间轴状态死锁或缓存冲突
+                this.series.candle.setData([]);
+                this.series.hLine.setData([]);
+
+                // 再写入新聚合的数据
+                this.series.candle.setData(processed);
+                this.series.vol.setData(processed.map(d => {
+                    const h = d.vol;
+                    let alpha = h < 35 ? 0.1 : (h <= 80 ? 0.1 + ((h - 35) / (80 - 35)) * 0.6 : 0.9);
+                    return {
+                        time: d.time,
+                        value: h,
+                        color: `rgba(100, 181, 246, ${alpha})`
+                    };
+                }));
+
+                const timeScale = this.chartIns.timeScale();
+
+                if (resType === 'H') {
+                    this.series.hLine.setData(processed.map(d => ({ time: d.time, value: d.close })));
+                    this.series.hLine.applyOptions({ visible: true });
+                    this.series.candle.applyOptions({
+                        upColor: 'rgba(38,166,154,0.3)',
+                        downColor: 'rgba(239,83,80,0.3)',
+                        wickVisible: false,
+                        priceLineColor: '#C0392B'
+                    });
+                    timeScale.applyOptions({ barSpacing: 6 });
+                } else {
+                    this.series.hLine.applyOptions({ visible: false });
+                    this.series.candle.applyOptions({
+                        upColor: '#4caf50',
+                        downColor: '#fbc02d',
+                        wickVisible: true,
+                        wickUpColor: '#4caf50',
+                        wickDownColor: '#fbc02d',
+                        priceLineColor: ''
+                    });
+                    timeScale.applyOptions({ barSpacing: 12 });
+                }
+
+                if (processed.length > 0) {
+                    timeScale.fitContent();
+                    timeScale.scrollToPosition(1, false); // 关键：强制滚动对齐
+                    if (processed.length > 80) {
+                        timeScale.setVisibleRange({
+                            from: processed[processed.length - 80].time,
+                            to: processed[processed.length - 1].time
+                        });
+                    }
+                }
+            }
+
+            // 健壮聚合算法：优先提取 d.date，时间戳作为第二重保险，杜绝跨天/跨年紊乱
+            _aggregate(data, type) {
+                if (!data || data.length === 0) return [];
+                const res = []; let currentGroup = []; let lastKey = null;
+
+                data.forEach(d => {
+                    let key = d.time;
+                    if (d.date && typeof d.date === 'string' && d.date.includes('/')) {
+                        const parts = d.date.split('/');
+                        if (type === 'D') key = `${parts[0]}-${parts[1]}-${parts[2]}`;
+                        else if (type === 'M') key = `${parts[0]}-${parts[1]}`;
+                        else if (type === 'Y') key = parts[0];
+                    } else {
+                        const dt = new Date(d.time * 1000);
+                        if (type === 'D') key = `${dt.getUTCFullYear()}-${dt.getUTCMonth()}-${dt.getUTCDate()}`;
+                        else if (type === 'M') key = `${dt.getUTCFullYear()}-${dt.getUTCMonth()}`;
+                        else if (type === 'Y') key = dt.getUTCFullYear();
+                    }
+
+                    if (type === 'W') {
+                        const dt = new Date(d.time * 1000);
+                        const firstDay = new Date(dt.getUTCFullYear(), 0, 1);
+                        key = `${dt.getUTCFullYear()}-w${Math.ceil((((dt - firstDay) / 86400000) + firstDay.getUTCDay() + 1) / 7)}`;
+                    }
+
+                    if (lastKey !== null && key !== lastKey) {
+                        res.push(this._formatBar(currentGroup));
+                        currentGroup = [];
+                    }
+                    currentGroup.push(d);
+                    lastKey = key;
+                });
+
+                if (currentGroup.length > 0) res.push(this._formatBar(currentGroup));
+                return res;
+            }
+
+            _formatBar(chunk) {
+                return {
+                    time: chunk[0].time, open: chunk[0].open,
+                    high: Math.max(...chunk.map(d => d.high)), low: Math.min(...chunk.map(d => d.low)),
+                    close: chunk[chunk.length - 1].close, vol: chunk.reduce((s, d) => s + (d.vol || 0), 0) / chunk.length
+                };
+            }
+
+            _startClock() {
+                const updateClock = () => {
+                    const city = this.locationConfig[this.dom.selector.value];
+                    if (city?.tz) {
+                        this.dom.clock.innerText = new Intl.DateTimeFormat('zh-Hans-CN', {
+                            timeZone: city.tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                        }).format(new Date());
+                    }
+                };
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+
+            _handleTooltip(p) {
+                if (!p.time || p.point.x < 0) { this.dom.tooltip.style.display = 'none'; return; }
+                const d = p.seriesData.get(this.series.candle);
+                const v = p.seriesData.get(this.series.vol);
+                if (d) {
+                    this.dom.tooltip.style.display = 'block';
+                    this.dom.tooltip.style.left = (p.point.x + 15) + 'px';
+                    this.dom.tooltip.style.top = (p.point.y + 15) + 'px';
+                    this.dom.tooltip.innerHTML = `
+                        <div style="color:#4caf50; font-weight:600; margin-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.1);">Details</div>
+                        <div style="display:grid; grid-template-columns:50px 1fr; gap:2px; font-family:monospace;">
+                            <span style="color:#999">MAX:</span><b style="color:#ff5252">${d.high.toFixed(1)}℃</b>
+                            <span style="color:#999">OPEN:</span><b style="color:#eee">${d.open.toFixed(1)}℃</b>
+                            <span style="color:#999">CLOSE:</span><b style="color:#eee">${d.close.toFixed(1)}℃</b>
+                            <span style="color:#999">MIN:</span><b style="color:#448aff">${d.low.toFixed(1)}℃</b>
+                            <div style="grid-column: span 2; border-top:1px dashed #444; margin-top:4px; padding-top:4px; display:flex; justify-content:space-between">
+                                <span style="color:#999">HUM:</span>
+                                <b style="color:#b2ebf2">${v ? v.value.toFixed(1) : '0.0'}%</b>
+                            </div>
+                        </div>`;
+                }
+            }
+        }
+
+        const app = new MeteoApp();
+        app.init();
+    </script>
+</body>
+</html>
