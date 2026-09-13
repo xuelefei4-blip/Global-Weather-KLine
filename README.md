@@ -1,10 +1,5 @@
 <div align="center">
 
-  <!-- 项目 Logo -->
-  <a href="https://github.com/xuelefei4-blip/Global-Weather-KLine">
-    <img src="MeteoSystem/docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
-  </a>
-
   # Global Weather KLine
 
   <p align="center">
@@ -38,9 +33,8 @@
 ## 📸 Live Preview (运行演示)
 
 <p align="center">
-  <img src="docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
+  <img src="MeteoSystem/docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
 </p>
----
 
 ## ✨ Features
 
