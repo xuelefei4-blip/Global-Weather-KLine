@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="icon" href="static/images/logo.svg" type="image/svg+xml">
     <meta charset="UTF-8">
     <title>Global Meteorology Lab</title>
     <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="stylesheet" href="static/css/style.css">
+    
 </head>
 <body>
 
@@ -487,13 +489,16 @@
     }
 
     window.onload = async () => {
+        // 1. 必须先异步加载完所有城市索引
+        await loadAllCities();
+
+        // 2. 数据就绪后再实例化图表和主题管理器
         const chartA = new DualMeteoApp('containerA', 'tooltipA', 'searchA', 'dropdownA', 'coordA', 'clockA', 'resA', 'humA');
         const chartB = new DualMeteoApp('containerB', 'tooltipB', 'searchB', 'dropdownB', 'coordB', 'clockB', 'resB', 'humB');
 
         new ThemeManager([chartA.chartIns, chartB.chartIns]);
 
-        await loadAllCities();
-
+        // 3. 默认赋值城市
         if (allCities.length > 0) {
             const city1 = allCities.find(c => c.id === "nyc") || allCities[0];
             const city2 = allCities.find(c => c.id === "tor") || allCities[1] || allCities[0];

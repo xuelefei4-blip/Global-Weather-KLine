@@ -1,52 +1,66 @@
-I am an architectural designer. I've always wanted to understand what our past climate and temperatures were really like — whether they were relatively stable or becoming increasingly extreme.
+<div align="center">
 
-Using AI, I transformed decades of global weather station historical data into **K-line (candlestick) charts** and displayed them on a 3D globe. This makes it much easier to compare and analyze past climate patterns.
+  <!-- 项目 Logo -->
+  <a href="https://github.com/xuelefei4-blip/Global-Weather-KLine">
+    <img src="MeteoSystem/docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
+  </a>
 
-I also believe this visualization could be very useful for farmers and agricultural professionals, helping them review historical weather trends to better understand past harvests and make future decisions.
+  # Global Weather KLine
 
-Simply search or click on a city, and you'll see long-term trends for temperature, humidity, wind speed, and more — clearly revealing day-night differences and extreme weather events.
+  <p align="center">
+    English | <b>简体中文</b>
+  </p>
 
-## Live Demo
-[🔗 打开交互演示](https://global-weather-k-line.vercel.app) 
-https://global-weather-k-line.vercel.app/
-*(Currently showing a curated subset of major cities)*
+  <br>
 
-## Screenshots
-![3D Globe Overview](screenshots/globe-main.png)
-![K-line Temperature Example](screenshots/kline-temperature.png)
-![Humidity & Wind Views](screenshots/kline-humidity.png)
+  <p align="center">
+    🌍📈 Visualize global climate and meteorological data through professional financial K-line charts.
+  </p>
 
-## Features
-- Smooth 3D globe interaction (rotate, zoom, and click cities)
-- Interactive K-line charts for temperature, humidity, and wind speed
-- Clear visualization of long-term trends, day-night differences, and extreme weather events
-- Lightweight and responsive design
+  <!-- 状态与技术栈徽章 -->
+  <p align="center">
+    <a href="https://github.com/xuelefei4-blip/Global-Weather-KLine/actions"><img src="https://img.shields.io/badge/status-active-success.svg" alt="Status"></a>
+    <img src="https://img.shields.io/badge/version-1.0.2026-green.svg" alt="Version">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+    <img src="https://img.shields.io/badge/charts-Lightweight%20Charts-ff69b4.svg" alt="Charts">
+    <img src="https://img.shields.io/badge/globe-Globe.gl-orange.svg" alt="3D Globe">
+  </p>
 
-## Tech Stack
-- **Frontend**: Vanilla JavaScript
-- **Charts**: Lightweight Charts
-- **3D Globe**: Globe.gl
+  <p align="center">
+    <a href="https://github.com/xuelefei4-blip/Global-Weather-KLine/issues"><img src="https://img.shields.io/static/v1?color=1f2328&logo=github&logoColor=fff&label&message=Github%20Issues" alt="Issues"></a>
+    <a href="https://github.com/xuelefei4-blip/Global-Weather-KLine/discussions"><img src="https://img.shields.io/static/v1?color=1f2328&logo=github&logoColor=fff&label&message=Github%20Discussions" alt="Discussions"></a>
+  </p>
 
-## Data Source & Notes
-Public historical weather station data from global meteorological archives.
+</div>
 
-All data files include a fingerprint:  
-`source`: "Kingcat666_weather_kline_v2026"
+---
 
-**Note**: This is a curated subset for demonstration purposes only. The full dataset is significantly larger.
+## 📸 Live Preview (运行演示)
 
-## License
-MIT License
+<p align="center">
+  <img src="docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
+</p>
+---
 
-## Feedback Welcome
-I'd love to hear your thoughts:
+## ✨ Features
 
-- Is this visualization style clear, useful, and visually appealing?
-- Which cities or weather indicators would you like to see added?
-- Any suggestions or ideas are welcome!
+* 📦 **Out of the box:** Simple and fast integration, zero backend dependency to get started.
+* 🚀 **Lightweight & Smooth:** High-performance rendering via TradingView's `Lightweight Charts` engine.
+* ⏳ **Multi-Resolution:** Smooth switching between **H (Hour)**, **D (Day)**, **W (Week)**, **M (Month)**, and **Y (Year)** periods.
+* 🌐 **3D Globe Integration:** Immersive 3D interactive earth using `Globe.gl`, syncing seamlessly with 161 global cities.
+* 💧 **Humidity & DRT Alerts:** Real-time relative humidity tracking complemented by customized DRT threshold warning indicators.
+* 🌗 **Dual Theme:** Out-of-the-box support for sleek Dark Mode and clean Light Mode.
 
-Feel free to leave a comment or reach out to me on X (Twitter).
+---
 
+## 📦 Architecture (项目结构)
 
-2026.4.3_feat: add X (Twitter) and Reddit share links to footer——index.html
-2024.4.3—add Osaka data
+```text
+Global-Weather-KLine/
+├── MeteoSystem/               # [前端大屏] 纯静态气象 K 线监控系统
+│   ├── kline.html             # 单城市气象 K 线监控主界面
+│   ├── lab.html               # 双城市同屏对比实验室
+│   └── static/                # 样式、地球贴图及全球气象 JSON 数据库
+│
+└── MeteoOps/                  # [后端管道] Python 自动化运维与质检工具箱
+    └── scripts/               # 6步闭环数据抓取、对齐与自愈修复脚本
