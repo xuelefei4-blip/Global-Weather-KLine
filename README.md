@@ -36,6 +36,8 @@
   <img src="MeteoSystem/docs/preview.gif" width="100%" alt="Global Weather KLine Live Preview">
 </p>
 
+---
+
 ## ✨ Features
 
 * 📦 **Zero Backend Dependency**: Pure static frontend architecture. Run it locally or access it directly via web browsers.
@@ -61,3 +63,20 @@ Global-Weather-KLine/
     │   └── images/            # Globe textures & icon resources
     ├── kline.html             # Single-city meteorological K-line monitoring main interface
     └── lab.html               # Dual-city side-by-side comparison laboratory
+```
+
+
+##  🚀 Quick Start
+Clone the repository:
+
+Bash
+git clone [https://github.com/xuelefei4-blip/Global-Weather-KLine.git](https://github.com/xuelefei4-blip/Global-Weather-KLine.git)
+cd Global-Weather-KLine
+Run locally:
+
+Open MeteoSystem/kline.html directly in any modern browser, or
+
+Launch it via the VS Code Live Server extension.
+
+##  📄 License
+This project is licensed under the MIT License.
