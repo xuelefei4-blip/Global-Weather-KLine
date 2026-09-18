@@ -1,2 +1,7 @@
 
 MeteoOps/
+
+MeteoOps/**
+*.pyc
+__pycache__/
+.vscode/
