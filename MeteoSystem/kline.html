@@ -35,9 +35,12 @@
             </div>
 
             <div style="display:flex; gap:10px; align-items:center;">
-                <button id="theme-toggle" class="theme-toggle-btn">
-                    <i class="fa-solid fa-moon"></i> <span>Dark</span>
-                </button>
+                <select id="theme-select" class="theme-select" title="Switch Theme">
+                    <option value="dark">🌙 Dark</option>
+                    <option value="light">☀️ Light</option>
+                    <option value="ocean">🌊 Ocean Blue</option>
+                    <option value="cyberpunk">⚡ Cyberpunk</option>
+                </select>
                 <button id="lab-btn" class="lab-btn">Compare Lab ➔</button>
                 <div class="btn-group">
                     <label><input type="checkbox" id="hum-check" checked><span>Humidity %</span></label>
@@ -126,38 +129,65 @@
         class ThemeManager {
             constructor(chart) {
                 this.chart = chart;
-                this.btn = document.getElementById('theme-toggle');
+                this.select = document.getElementById('theme-select');
+                this.themes = ['dark', 'light', 'ocean', 'cyberpunk'];
+                this.themeConfigs = {
+                    dark: {
+                        className: '',
+                        textColor: '#8e94a5',
+                        gridColor: 'rgba(255,255,255,0.03)',
+                        borderColor: 'rgba(255,255,255,0.1)'
+                    },
+                    light: {
+                        className: 'light-theme',
+                        textColor: '#4b5563',
+                        gridColor: 'rgba(0,0,0,0.06)',
+                        borderColor: 'rgba(0,0,0,0.12)'
+                    },
+                    ocean: {
+                        className: 'ocean-theme',
+                        textColor: '#7dd3fc',
+                        gridColor: 'rgba(56, 189, 248, 0.05)',
+                        borderColor: 'rgba(56, 189, 248, 0.18)'
+                    },
+                    cyberpunk: {
+                        className: 'cyberpunk-theme',
+                        textColor: '#f472b6',
+                        gridColor: 'rgba(244, 63, 94, 0.06)',
+                        borderColor: 'rgba(244, 63, 94, 0.22)'
+                    }
+                };
                 this.init();
             }
             init() {
-                const isLight = localStorage.getItem('meteo_theme') === 'light';
-                if (isLight) document.body.classList.add('light-theme');
-                this._updateBtn(isLight);
-                this._updateChart(isLight);
-                if (this.btn) this.btn.onclick = () => this.toggle();
+                const savedTheme = localStorage.getItem('meteo_theme') || 'dark';
+                const theme = this.themes.includes(savedTheme) ? savedTheme : 'dark';
+                this.applyTheme(theme);
+
+                if (this.select) {
+                    this.select.value = theme;
+                    this.select.onchange = (e) => this.applyTheme(e.target.value);
+                }
             }
-            toggle() {
-                const isLight = document.body.classList.toggle('light-theme');
-                localStorage.setItem('meteo_theme', isLight ? 'light' : 'dark');
-                this._updateBtn(isLight);
-                this._updateChart(isLight);
+            applyTheme(theme) {
+                const cfg = this.themeConfigs[theme] || this.themeConfigs['dark'];
+                document.body.classList.remove('light-theme', 'ocean-theme', 'cyberpunk-theme');
+                if (cfg.className) {
+                    document.body.classList.add(cfg.className);
+                }
+                localStorage.setItem('meteo_theme', theme);
+                if (this.select && this.select.value !== theme) {
+                    this.select.value = theme;
+                }
+                this._updateChart(cfg);
             }
-            _updateBtn(isLight) {
-                if (!this.btn) return;
-                this.btn.innerHTML = isLight
-                    ? `<i class="fa-solid fa-sun" style="color:#eab308"></i> <span>Light</span>`
-                    : `<i class="fa-solid fa-moon"></i> <span>Dark</span>`;
-            }
-            _updateChart(isLight) {
+            _updateChart(cfg) {
                 if (!this.chart) return;
-                const textColor = isLight ? '#4b5563' : '#8e94a5';
-                const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)';
-                const borderColor = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)';
                 this.chart.applyOptions({
-                    layout: { textColor },
-                    grid: { vertLines: { color: gridColor }, horzLines: { color: gridColor } },
-                    timeScale: { borderColor },
-                    leftPriceScale: { borderColor }
+                    layout: { textColor: cfg.textColor },
+                    grid: { vertLines: { color: cfg.gridColor }, horzLines: { color: cfg.gridColor } },
+                    timeScale: { borderColor: cfg.borderColor },
+                    leftPriceScale: { borderColor: cfg.borderColor }
                 });
             }
         }
@@ -216,14 +246,14 @@
                     localization: {
                         timeFormatter: (t) => {
                             const d = new Date(t * 1000);
-                            return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:00`;
+                            return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:00`;
                         }
                     },
                     timeScale: { 
                         borderColor: 'rgba(255,255,255,0.1)', timeVisible: true,
                         tickMarkFormatter: (t) => {
                             const d = new Date(t * 1000);
-                            return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+                            return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
                         }
                     },
                     leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.1)', scaleMargins: { top: 0.05, bottom: 0.25 } }
@@ -262,15 +292,22 @@
                     this.globeIns = Globe()(el)
                         .globeImageUrl('static/images/earth-blue-marble.jpg')
                         .backgroundColor('rgba(0,0,0,0)').width(100).height(100)
-                        .globeCurvatureResolution(0.5).pointResolution(12)
+                        .globeCurvatureResolution(0.25).pointResolution(24)
                         .ringColor(() => '#FEFAE0').ringMaxRadius(3).ringPropagationSpeed(1).ringRepeatPeriod(1800);
+
+                    const renderer = this.globeIns.renderer();
+                    if (renderer) {
+                        renderer.setPixelRatio(window.devicePixelRatio || 2);
+                    }
 
                     const orbitControls = this.globeIns.controls();
                     if (orbitControls) {
                         orbitControls.autoRotate = true;
                         orbitControls.autoRotateSpeed = 0.3;
                     }
-                } catch(e) { console.warn("Globe fallback", e); }
+                } catch (e) {
+                    console.warn("Globe fallback", e);
+                }
             }
 
             async _loadIndex() {

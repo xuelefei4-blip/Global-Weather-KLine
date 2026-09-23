@@ -36,9 +36,12 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 15px;">
-            <button id="theme-toggle" class="theme-toggle-btn">
-                <i class="fa-solid fa-moon"></i> <span>Dark</span>
-            </button>
+            <select id="theme-select" class="theme-select" title="Switch Theme">
+                <option value="dark">🌙 Dark</option>
+                <option value="light">☀️ Light</option>
+                <option value="ocean">🌊 Ocean Blue</option>
+                <option value="cyberpunk">⚡ Cyberpunk</option>
+            </select>
             <button id="kline-btn" class="kline-btn">← Single Monitor</button>
             <div class="btn-group">
                 <label><input type="radio" name="resA" value="H"><span>H</span></label>
@@ -119,39 +122,66 @@
     class ThemeManager {
         constructor(charts = []) {
             this.charts = charts;
-            this.btn = document.getElementById('theme-toggle');
+            this.select = document.getElementById('theme-select');
+            this.themes = ['dark', 'light', 'ocean', 'cyberpunk'];
+            this.themeConfigs = {
+                dark: {
+                    className: '',
+                    textColor: '#8e94a5',
+                    gridColor: 'rgba(255,255,255,0.03)',
+                    borderColor: 'rgba(255,255,255,0.1)'
+                },
+                light: {
+                    className: 'light-theme',
+                    textColor: '#4b5563',
+                    gridColor: 'rgba(0,0,0,0.06)',
+                    borderColor: 'rgba(0,0,0,0.12)'
+                },
+                ocean: {
+                    className: 'ocean-theme',
+                    textColor: '#7dd3fc',
+                    gridColor: 'rgba(56, 189, 248, 0.05)',
+                    borderColor: 'rgba(56, 189, 248, 0.18)'
+                },
+                cyberpunk: {
+                    className: 'cyberpunk-theme',
+                    textColor: '#f472b6',
+                    gridColor: 'rgba(244, 63, 94, 0.06)',
+                    borderColor: 'rgba(244, 63, 94, 0.22)'
+                }
+            };
             this.init();
         }
         init() {
-            const isLight = localStorage.getItem('meteo_theme') === 'light';
-            if (isLight) document.body.classList.add('light-theme');
-            this._updateBtn(isLight);
-            this._updateCharts(isLight);
-            if (this.btn) this.btn.onclick = () => this.toggle();
+            const savedTheme = localStorage.getItem('meteo_theme') || 'dark';
+            const theme = this.themes.includes(savedTheme) ? savedTheme : 'dark';
+            this.applyTheme(theme);
+
+            if (this.select) {
+                this.select.value = theme;
+                this.select.onchange = (e) => this.applyTheme(e.target.value);
+            }
         }
-        toggle() {
-            const isLight = document.body.classList.toggle('light-theme');
-            localStorage.setItem('meteo_theme', isLight ? 'light' : 'dark');
-            this._updateBtn(isLight);
-            this._updateCharts(isLight);
+        applyTheme(theme) {
+            const cfg = this.themeConfigs[theme] || this.themeConfigs['dark'];
+            document.body.classList.remove('light-theme', 'ocean-theme', 'cyberpunk-theme');
+            if (cfg.className) {
+                document.body.classList.add(cfg.className);
+            }
+            localStorage.setItem('meteo_theme', theme);
+            if (this.select && this.select.value !== theme) {
+                this.select.value = theme;
+            }
+            this._updateCharts(cfg);
         }
-        _updateBtn(isLight) {
-            if (!this.btn) return;
-            this.btn.innerHTML = isLight
-                ? `<i class="fa-solid fa-sun" style="color:#eab308"></i> <span>Light</span>`
-                : `<i class="fa-solid fa-moon"></i> <span>Dark</span>`;
-        }
-        _updateCharts(isLight) {
-            const textColor = isLight ? '#4b5563' : '#8e94a5';
-            const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)';
-            const borderColor = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)';
+        _updateCharts(cfg) {
             this.charts.forEach(c => {
                 if (!c) return;
                 c.applyOptions({
-                    layout: { textColor },
-                    grid: { vertLines: { color: gridColor }, horzLines: { color: gridColor } },
-                    timeScale: { borderColor },
-                    leftPriceScale: { borderColor }
+                    layout: { textColor: cfg.textColor },
+                    grid: { vertLines: { color: cfg.gridColor }, horzLines: { color: cfg.gridColor } },
+                    timeScale: { borderColor: cfg.borderColor },
+                    leftPriceScale: { borderColor: cfg.borderColor }
                 });
             });
         }
@@ -191,14 +221,14 @@
                 localization: {
                     timeFormatter: (t) => {
                         const d = new Date(t * 1000);
-                        return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:00`;
+                        return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:00`;
                     }
                 },
                 timeScale: {
                     borderColor: 'rgba(255,255,255,0.1)', timeVisible: true, barSpacing: 12, minBarSpacing: 4, rightOffset: 5,
                     tickMarkFormatter: (t) => {
                         const d = new Date(t * 1000);
-                        return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+                        return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
                     }
                 },
                 leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.15)', scaleMargins: { top: 0.1, bottom: 0.3 } },
@@ -268,7 +298,11 @@
         updateClock() {
             if (this.currentCity?.tz) {
                 this.clockEl.textContent = new Intl.DateTimeFormat('zh-Hans-CN', {
-                    timeZone: this.currentCity.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                    timeZone: this.currentCity.tz,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
                 }).format(new Date());
             }
         }
@@ -460,7 +494,7 @@
                     } else if (it.id && it.name) {
                         it.id = it.id.toLowerCase().trim();
                         if (!allCities.some(c => c.id === it.id)) {
-                            it.years = it.years || [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+                            it.years = it.years || [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
                             it.lat = it.lat || 0;
                             it.lon = it.lon || 0;
                             allCities.push(it);

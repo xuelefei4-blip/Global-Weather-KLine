@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. 主题变量定义区 (暗黑 / 亮白 双皮肤配置)
+   1. 主题变量定义区 (暗黑 / 亮白 / 深海蓝 / 赛博朋克 四皮肤配置)
    ========================================================================== */
 :root {
     /* 暗黑主题 (Default Dark) */
@@ -39,6 +39,46 @@ body.light-theme {
     --input-border: rgba(0, 0, 0, 0.12);
     --tooltip-bg: rgba(255, 255, 255, 0.98);
     --dropdown-bg: rgba(255, 255, 255, 0.98);
+}
+
+body.ocean-theme {
+    /* 深海蓝主题 (Ocean Blue Theme) */
+    --bg-overlay: rgba(8, 24, 43, 0.7);
+    --bg-mask: rgba(14, 38, 64, 0.35);
+    --panel-bg: rgba(13, 31, 56, 0.92);
+    --panel-border: rgba(56, 189, 248, 0.18);
+    --footer-bg: rgba(10, 25, 47, 0.9);
+    --text-main: #f0f9ff;
+    --text-muted: #64748b;
+    --text-sub: #7dd3fc;
+    --accent-green: #38bdf8;
+    --accent-green-bg: rgba(56, 189, 248, 0.18);
+    --btn-bg: rgba(56, 189, 248, 0.08);
+    --btn-disabled: #334155;
+    --input-bg: rgba(15, 39, 70, 0.6);
+    --input-border: rgba(56, 189, 248, 0.22);
+    --tooltip-bg: rgba(10, 28, 52, 0.96);
+    --dropdown-bg: rgba(10, 28, 52, 0.98);
+}
+
+body.cyberpunk-theme {
+    /* 赛博朋克主题 (Cyberpunk Neon Theme) */
+    --bg-overlay: rgba(20, 10, 35, 0.75);
+    --bg-mask: rgba(45, 15, 60, 0.3);
+    --panel-bg: rgba(28, 16, 44, 0.92);
+    --panel-border: rgba(244, 63, 94, 0.28);
+    --footer-bg: rgba(20, 11, 33, 0.9);
+    --text-main: #fdf2f8;
+    --text-muted: #9d8ba7;
+    --text-sub: #f472b6;
+    --accent-green: #f43f5e;
+    --accent-green-bg: rgba(244, 63, 94, 0.22);
+    --btn-bg: rgba(244, 63, 94, 0.1);
+    --btn-disabled: #4c1d40;
+    --input-bg: rgba(35, 18, 55, 0.7);
+    --input-border: rgba(244, 63, 94, 0.3);
+    --tooltip-bg: rgba(28, 14, 43, 0.96);
+    --dropdown-bg: rgba(28, 14, 43, 0.98);
 }
 
 /* ==========================================================================
@@ -152,25 +192,30 @@ body::before {
     transform: translateY(-1px);
 }
 
-/* 主题切换按钮 */
-.theme-toggle-btn {
-    background: var(--btn-bg);
+/* 主题切换下拉框 */
+.theme-select {
+    background: var(--input-bg);
     border: 1px solid var(--panel-border);
-    color: var(--text-sub);
-    padding: 6px 12px;
+    color: var(--accent-green);
+    padding: 6px 10px;
     border-radius: 10px;
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.25s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    outline: none;
+    font-family: inherit;
 }
 
-.theme-toggle-btn:hover {
-    color: var(--accent-green);
+.theme-select:hover, .theme-select:focus {
+    border-color: var(--accent-green);
     background: var(--accent-green-bg);
+}
+
+.theme-select option {
+    background: var(--dropdown-bg);
+    color: var(--text-main);
+    font-weight: normal;
 }
 
 /* Tooltip 浮窗 */
