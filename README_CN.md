@@ -3,6 +3,11 @@
   # 🌍 全球天气温度K线可视化系统 (Global Weather K-Line)
 
 > 🚀 **在线体验平台（Live Demo）**：[https://global-weather-k-line.vercel.app/](https://global-weather-k-line.vercel.app/)
+>
+> ### 核心功能与气象维度
+- **温度K线**：将金融蜡烛图（Candlestick）应用于气温统计，呈现每日最高气温、最低气温与开盘/收盘温度走势。
+- **气象可视化**：支持全球数十个核心城市近十年（2015-2026）历史气温与实况天气监控对比。
+- **综合气象指标**：包含相对湿度、风速与 3D 地球仪交互视窗。
 
   <p align="center">
     <a href="README.md">English</a> | <b>简体中文</b>
