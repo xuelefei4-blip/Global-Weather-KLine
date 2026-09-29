@@ -4,14 +4,14 @@
     <link rel="icon" href="static/images/logo.svg" type="image/svg+xml">
     <meta charset="UTF-8">
     
-    <!-- 1. 核心双语标题：兼顾国际搜索与“温度K线”中文检索 -->
-    <title>Global Weather K-Line Monitor | 全球天气温度K线可视化系统</title>
+    <!-- 1. 核心标题：将“温度K线”与“气温走势”置于最高权重位 -->
+    <title>温度K线 - 全球气温蜡烛图与天气走势可视化系统 | Global Weather & Temperature K-Line Monitor</title>
     
-    <!-- 2. 中英双语 SEO 描述：涵盖气象蜡烛图与长周期走势分析 -->
-    <meta name="description" content="Global Weather K-Line Monitor - Interactive meteorological data visualization platform applying financial candlestick charts to climate analysis. 全球天气温度K线可视化系统，通过每日气温极值蜡烛图呈现全球主要城市2015-2026历史气象走势与实时监控。">
+    <!-- 2. 双语高密度描述：紧密咬合“温度”、“气温”、“K线”、“Candlestick” -->
+    <meta name="description" content="专业温度K线（Temperature K-Line）与气温走势可视化监控平台。通过每日最高气温、最低气温、均温与湿度构建气象温度蜡烛图，精准呈现全球主要城市2015至2026年历史真实气温波动与实况气象监控。Global Weather & Temperature Candlestick Monitor.">
     
-    <!-- 3. 全量双语搜索关联词库 -->
-    <meta name="keywords" content="Weather K-Line, Temperature Candlestick, Meteorological Monitor, Climate Visualization, Global Weather K-Line, 温度K线, 气象K线, 全球天气温度K线, 气温蜡烛图, 气象数据可视化, 历史气温走势, 气温K线图">
+    <!-- 3. 全量关联词库：深度覆盖“温度”与“气温”长尾词 -->
+    <meta name="keywords" content="温度K线,气温K线,温度蜡烛图,气温走势图,温度走势K线,天气K线,气象K线图,全球气温监控,历史温度对比,Temperature K-Line,Weather Candlestick,Temperature Candlestick Chart,Climate Temperature Monitor">
     
     <link rel="canonical" href="https://global-weather-k-line.vercel.app/kline.html">
     <meta name="robots" content="index,follow">
@@ -32,18 +32,23 @@
 </head>
 <body>
 
-    <!-- 双语搜索引擎语义解析层 (对页面排版100%隐形，专供 Google/Bing 爬虫提取双语词义与解决 Canvas 盲区) -->
+    <!-- 双语搜索引擎语义解析层：注入高密度“温度 / Temperature”语义，破除爬虫对纯 Canvas 画布的理解盲区 -->
     <div style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;" aria-hidden="true">
-        <h1>Global Weather K-Line Monitor - 全球天气温度K线可视化分析系统</h1>
+        <h1>全球天气温度K线可视化分析系统 - Temperature & Weather K-Line Monitor</h1>
         <article>
-            <h2>Interactive Climate Candlestick Chart / 气象温度蜡烛图</h2>
+            <h2>温度K线图（气温蜡烛图）核心概念与定义</h2>
             <p>
-                An interactive climate monitoring platform that innovatively applies financial candlestick (K-Line) charts to meteorological data. 
-                Visualizing daily high, low, open, and close temperatures alongside relative humidity for major cities across Asia, Europe, North America, and Oceania from 2015 to 2026.
+                本系统是专为气象数据设计的<strong>温度K线（Temperature K-Line）</strong>分析平台。
+                将金融蜡烛图技术引入气温观测：
+                每日最高气温（High Temperature）对应最高价；
+                每日最低气温（Low Temperature）对应最低价；
+                每日初始气温（Open Temperature）对应开盘价；
+                每日终了气温（Close Temperature）对应收盘价。
+                通过红绿蜡烛柱体直观呈现气温升降，实现全球气象温度变化趋势与极值波动的高效可视化。
             </p>
             <p>
-                本系统创新性地将金融<strong>K线图（蜡烛图）</strong>理念引入气象领域，构建专业的<strong>温度K线（Temperature K-Line）</strong>系统。
-                涵盖全球各主要城市近十年每日最高温、最低温、均温波动走势与实时湿度层分布。
+                An interactive climate monitoring platform that innovatively applies financial candlestick (Temperature K-Line) charts to meteorological data. 
+                Visualizing daily high temperature, low temperature, open and close temperature alongside relative humidity for major cities worldwide from 2015 to 2026.
             </p>
         </article>
     </div>
@@ -121,11 +126,11 @@
     <div class="footer-copyright">
         © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
         Version: 2026.03.28 • Built with passion for understanding climate change<br>
-        Global Weather K-Line Monitor • 全球气象温度K线可视化实验台<br>
+        Global Weather & Temperature K-Line Monitor • 全球天气温度K线可视化实验台<br>
         Educational & Non-commercial use only. Commercial use requires permission.<br>
         If this tool helped you, consider supporting it → 
         <a href="https://ko-fi.com/kingcat666" target="_blank" style="color:#00ff7f; text-decoration:none;">Ko-fi</a>
-        • Visualizing climate through time-series analysis
+        • Visualizing climate and temperature trends through time-series analysis
     </div>
 
     <div id="globe-container"></div>
@@ -488,11 +493,11 @@
                 const resType = document.querySelector('input[name="res"]:checked').value;
                 const processed = this._aggregate(this.rawData, resType);
 
-                // 关键：先显式清空旧数据，防止多周期切换时图表内部时间轴状态死锁或缓存冲突
+                // 先显式清空旧数据，防止多周期切换时图表内部时间轴状态死锁
                 this.series.candle.setData([]);
                 this.series.hLine.setData([]);
 
-                // 再写入新聚合的数据
+                // 写入聚合数据
                 this.series.candle.setData(processed);
                 this.series.vol.setData(processed.map(d => {
                     const h = d.vol;
@@ -531,7 +536,7 @@
 
                 if (processed.length > 0) {
                     timeScale.fitContent();
-                    timeScale.scrollToPosition(1, false); // 关键：强制滚动对齐
+                    timeScale.scrollToPosition(1, false);
                     if (processed.length > 80) {
                         timeScale.setVisibleRange({
                             from: processed[processed.length - 80].time,
@@ -541,7 +546,6 @@
                 }
             }
 
-            // 健壮聚合算法：优先提取 d.date，时间戳作为第二重保险，杜绝跨天/跨年紊乱
             _aggregate(data, type) {
                 if (!data || data.length === 0) return [];
                 const res = []; let currentGroup = []; let lastKey = null;
