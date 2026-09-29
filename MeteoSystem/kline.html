@@ -3,55 +3,73 @@
 <head>
     <link rel="icon" href="static/images/logo.svg" type="image/svg+xml">
     <meta charset="UTF-8">
-    
-    <!-- 1. 核心标题：将“温度K线”与“气温走势”置于最高权重位 -->
-    <title>温度K线 - 全球气温蜡烛图与天气走势可视化系统 | Global Weather & Temperature K-Line Monitor</title>
-    
-    <!-- 2. 双语高密度描述：紧密咬合“温度”、“气温”、“K线”、“Candlestick” -->
-    <meta name="description" content="专业温度K线（Temperature K-Line）与气温走势可视化监控平台。通过每日最高气温、最低气温、均温与湿度构建气象温度蜡烛图，精准呈现全球主要城市2015至2026年历史真实气温波动与实况气象监控。Global Weather & Temperature Candlestick Monitor.">
-    
-    <!-- 3. 全量关联词库：深度覆盖“温度”与“气温”长尾词 -->
-    <meta name="keywords" content="温度K线,气温K线,温度蜡烛图,气温走势图,温度走势K线,天气K线,气象K线图,全球气温监控,历史温度对比,Temperature K-Line,Weather Candlestick,Temperature Candlestick Chart,Climate Temperature Monitor">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 核心标题：优先「气温蜡烛图」，降低开尔文歧义风险 -->
+    <title>气温蜡烛图 / 温度K线 - 全球历史天气走势可视化 | Temperature Candlestick Chart</title>
+
+    <!-- 核心描述 -->
+    <meta name="description" content="全球气温蜡烛图（Temperature Candlestick Chart）可视化平台。创新将金融K线/OHLC原理应用于气象：每日最高温、最低温、开盘温、收盘温绘制成蜡烛图，直观展示近十年历史气温波动与湿度变化。支持全球主要城市与3D地球交互。">
+
+    <!-- 高意图双语关键词 -->
+    <meta name="keywords" content="气温蜡烛图,温度K线图,气温K线图,天气蜡烛图,气象蜡烛图,气温OHLC,历史气温蜡烛图,温度蜡烛图,Temperature Candlestick Chart,Weather Candlestick,Temperature OHLC Chart,Daily Temperature Candlestick,Historical Temperature Candlestick,Climate Data Visualization">
+
+    <!-- 规范链接与爬虫指令（只保留一组） -->
     <link rel="canonical" href="https://global-weather-k-line.vercel.app/kline.html">
     <meta name="robots" content="index,follow">
 
-    <!-- 版本与作者元数据规范 -->
+    <!-- 版本与作者 -->
     <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
     <meta name="author" content="Kingcat66695111">
     <meta name="version" content="1.0.20260328">
     <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
-    
-    <!-- 第三方图标与依赖库 -->
+
+    <!-- Open Graph（社交分享） -->
+    <meta property="og:title" content="气温蜡烛图 - 全球温度K线可视化 | Temperature Candlestick Chart">
+    <meta property="og:description" content="用金融蜡烛图原理可视化全球城市历史气温：最高温、最低温、开盘温、收盘温一目了然。支持近十年数据与3D地球交互。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://global-weather-k-line.vercel.app/kline.html">
+    <meta property="og:image" content="https://global-weather-k-line.vercel.app/static/images/og-preview.png">
+    <meta property="og:site_name" content="Global Weather K-Line">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="气温蜡烛图 | Temperature Candlestick Chart">
+    <meta name="twitter:description" content="Visualize global temperature trends with candlestick charts like stocks. Historical weather data + 3D globe.">
+    <meta name="twitter:image" content="https://global-weather-k-line.vercel.app/static/images/og-preview.png">
+
+    <!-- 第三方依赖 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://unpkg.com/globe.gl"></script>
 
-    <!-- 引用独立全局样式表 (支持双皮肤换肤) -->
+    <!-- 全局样式 -->
     <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
 
-    <!-- 双语搜索引擎语义解析层：注入高密度“温度 / Temperature”语义，破除爬虫对纯 Canvas 画布的理解盲区 -->
-    <div style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;" aria-hidden="true">
-        <h1>全球天气温度K线可视化分析系统 - Temperature & Weather K-Line Monitor</h1>
-        <article>
-            <h2>温度K线图（气温蜡烛图）核心概念与定义</h2>
-            <p>
-                本系统是专为气象数据设计的<strong>温度K线（Temperature K-Line）</strong>分析平台。
-                将金融蜡烛图技术引入气温观测：
-                每日最高气温（High Temperature）对应最高价；
-                每日最低气温（Low Temperature）对应最低价；
-                每日初始气温（Open Temperature）对应开盘价；
-                每日终了气温（Close Temperature）对应收盘价。
-                通过红绿蜡烛柱体直观呈现气温升降，实现全球气象温度变化趋势与极值波动的高效可视化。
-            </p>
-            <p>
-                An interactive climate monitoring platform that innovatively applies financial candlestick (Temperature K-Line) charts to meteorological data. 
-                Visualizing daily high temperature, low temperature, open and close temperature alongside relative humidity for major cities worldwide from 2015 to 2026.
-            </p>
-        </article>
-    </div>
+    <!-- 双语搜索引擎语义解析层 -->
+<div style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;" aria-hidden="true">
+    <h1>全球气温蜡烛图与温度K线可视化分析系统 - Temperature Candlestick Chart & Weather K-Line Monitor</h1>
+    <article>
+        <h2>气温蜡烛图（温度K线图）核心概念与定义</h2>
+        <p>
+            本系统是专为气象数据设计的<strong>气温蜡烛图（Temperature Candlestick Chart）</strong>分析平台。
+            将金融K线技术引入气温观测：
+            每日最高气温对应最高价（High）；
+            每日最低气温对应最低价（Low）；
+            每日初始气温对应开盘价（Open）；
+            每日终了气温对应收盘价（Close）。
+            通过红绿蜡烛柱体直观呈现气温升降，像看股票一样查看每天的气温涨跌与波动幅度。
+        </p>
+        <p>
+            An interactive climate monitoring platform that innovatively applies financial candlestick (Temperature K-Line / OHLC) charts to meteorological data. 
+            Visualizing daily high temperature, low temperature, open and close temperature alongside relative humidity for major cities worldwide from 2015 to 2026.
+        </p>
+    </article>
+</div>
 
     <div class="main-floating-title">Meteorological Monitor</div>
 
