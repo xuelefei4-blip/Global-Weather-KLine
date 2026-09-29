@@ -1,17 +1,18 @@
 <div align="center">
 
-  # Global Weather K-Line Monitoring System
+  # 🌍 Global Weather K-Line Monitoring System (Global Weather K-Line)
  
 > 🚀 **在线体验平台（Live Demo）**：(https://global-weather-k-line.vercel.app/kline.html)
-> # 🌍 全球天气温度K线可视化系统 (Global Weather K-Line)
-
-> 🚀 **在线体验平台（Live Demo）**：[https://global-weather-k-line.vercel.app/](https://global-weather-k-line.vercel.app/)
-
+> 
 ### 核心功能与气象维度
 - **温度K线**：将金融蜡烛图（Candlestick）应用于气温统计，呈现每日最高气温、最低气温与开盘/收盘温度走势。
 - **气象可视化**：支持全球数十个核心城市近十年（2015-2026）历史气温与实况天气监控对比。
 - **综合气象指标**：包含相对湿度、风速与 3D 地球仪交互视窗。
-
+  
+### Core Features & Meteorological Dimensions
+- **Temperature Candlestick (K-Line)**: Applies financial candlestick charts (OHLC) to meteorological analysis, clearly visualizing daily open, high, low, and close temperatures along with historical volatility trends.
+- **Weather Visualization**: Comprehensive multi-year (2015–2026) historical temperature tracking and real-time monitoring across major global cities.
+- **Integrated Weather Metrics**: Includes relative humidity histograms, wind speed insights, and an interactive 3D WebGL globe view.
 ---
 
   <p align="center">
