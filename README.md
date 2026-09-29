@@ -1,6 +1,8 @@
 <div align="center">
 
   # Global Weather K-Line Monitoring System
+ 
+> 🚀 **在线体验平台（Live Demo）**：[https://global-weather-k-line.vercel.app/](https://global-weather-k-line.vercel.app/)
 
   <p align="center">
     <b>English</b> | <a href="README_CN.md">简体中文</a>
