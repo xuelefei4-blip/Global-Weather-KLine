@@ -21,6 +21,9 @@
 
 <!-- 城市 A 图表面板 -->
 <div class="chart-wrapper">
+    <a href="https://ko-fi.com/kingcat666" target="_blank" class="coffee-cup-icon" title="Support this project / Buy me a coffee ☕">
+        <i class="fa-solid fa-mug-hot"></i>
+    </a>
     <div class="header-panel">
         <div style="display: flex; align-items: center; gap: 15px;">
             <div class="search-container">
@@ -98,14 +101,21 @@
     </div>
 </div>
 
-<div class="footer-copyright">
-    © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
-    Version: 2026.03.28 • Built with passion for understanding climate change<br>
-    Educational & Non-commercial use only. Commercial use requires permission.<br>
-    If this tool helped you, consider supporting it → 
-    <a href="https://ko-fi.com/kingcat666" target="_blank" style="color:#00ff7f; text-decoration:none;">Ko-fi</a>
-    • Visualizing climate through time-series analysis
-</div>
+<footer class="footer-plain-intro">
+    <h2 class="intro-heading">Dual-City Climate Analysis Lab</h2>
+    <p class="intro-body">
+        Compare meteorological metrics side-by-side across two distinct geographic regions. Identify climate correlations, seasonal phase shifts, and microclimate variations using synchronized or independent timeframes.
+    </p>
+    <div class="intro-credits">
+        © 2026 Kingcat66695111 • Meteorological Monitor • 
+        <a href="https://ko-fi.com/kingcat666" target="_blank" class="footer-kofi-link">Support on Ko-fi</a>
+    </div>
+</footer>
+
+<button id="export-btn" class="lab-export-btn" title="Export Comparison Image">
+    <i class="fa-solid fa-camera"></i>
+    <span>Export PNG</span>
+</button>
 
 <script>
     let allCities = [];
@@ -181,7 +191,7 @@
                     layout: { textColor: cfg.textColor },
                     grid: { vertLines: { color: cfg.gridColor }, horzLines: { color: cfg.gridColor } },
                     timeScale: { borderColor: cfg.borderColor },
-                    leftPriceScale: { borderColor: cfg.borderColor }
+                    rightPriceScale: { borderColor: cfg.borderColor }
                 });
             });
         }
@@ -231,8 +241,17 @@
                         return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
                     }
                 },
-                leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.15)', scaleMargins: { top: 0.1, bottom: 0.3 } },
-                rightPriceScale: { visible: false }
+                leftPriceScale: {
+                    visible: true,
+                    borderColor: 'transparent',
+                    drawTicks: false,
+                    scaleMargins: { top: 0.85, bottom: 0 }
+                },
+                rightPriceScale: {
+                    visible: true,
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    scaleMargins: { top: 0.08, bottom: 0.25 }
+                }
             });
 
             this.chartIns.applyOptions({
@@ -241,25 +260,41 @@
 
             this.series.candle = this.chartIns.addCandlestickSeries({
                 upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, wickUpColor: '#4caf50', wickDownColor: '#fbc02d',
-                priceLineVisible: false, priceScaleId: 'left',
+                priceLineVisible: false, priceScaleId: 'right',
                 priceFormat: { type: 'custom', formatter: (p) => (p > 0 ? '+' : '') + p.toFixed(1) + '℃' }
             });
 
             this.series.hLine = this.chartIns.addLineSeries({
-                color: '#C0392B', lineWidth: 2, priceScaleId: 'left', visible: false, lastValueVisible: true, priceLineVisible: true
+                color: '#C0392B', lineWidth: 2, priceScaleId: 'right', visible: false, lastValueVisible: true, priceLineVisible: true
             });
 
             this.series.vol = this.chartIns.addHistogramSeries({
-                priceScaleId: 'vol-scale', visible: true,
+                priceScaleId: 'left',
+                visible: true,
+                lastValueVisible: true,
+                priceLineVisible: false,
                 priceFormat: { type: 'custom', formatter: (p) => p.toFixed(1) + '%' }
             });
 
-            this.chartIns.priceScale('vol-scale').applyOptions({
-                visible: true, position: 'right', borderVisible: false, scaleMargins: { top: 0.85, bottom: 0 }
+            this.series.vol.createPriceLine({
+                price: 35,
+                color: '#f44336',
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: true,
+                title: 'DRT'
             });
 
             this.chartIns.subscribeCrosshairMove(p => this._handleTooltip(p));
-            this.series.vol.createPriceLine({ price: 35, color: '#f44336', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'DRT' });
+
+            window.addEventListener('resize', () => {
+                if (this.chartIns && this.container) {
+                    this.chartIns.applyOptions({
+                        width: this.container.clientWidth,
+                        height: this.container.clientHeight
+                    });
+                }
+            });
         }
 
         async loadCity(city) {
@@ -546,6 +581,85 @@
             chartA.updateClock();
             chartB.updateClock();
         }, 1000);
+
+        // 4. 导出双城高清对比长图
+        document.getElementById('export-btn').onclick = async () => {
+            const btn = document.getElementById('export-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Exporting...</span>';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                const canvasA = chartA.chartIns.takeScreenshot();
+                const canvasB = chartB.chartIns.takeScreenshot();
+
+                const headerHeight = 70;
+                const gap = 20;
+                const padding = 30;
+                const footerHeight = 40;
+
+                const width = Math.max(canvasA.width, canvasB.width) + padding * 2;
+                const totalHeight = headerHeight + canvasA.height + gap + canvasB.height + footerHeight + padding * 2;
+
+                const outCanvas = document.createElement('canvas');
+                outCanvas.width = width;
+                outCanvas.height = totalHeight;
+                const ctx = outCanvas.getContext('2d');
+
+                // 绘制背景底色
+                ctx.fillStyle = '#16181f';
+                ctx.fillRect(0, 0, width, totalHeight);
+
+                // 绘制顶部标题
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px system-ui, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('METEOROLOGY LAB • DUAL-CITY COMPARISON', padding, padding + 28);
+
+                const cityAName = (chartA.currentCity?.name || 'City A').toUpperCase();
+                const cityBName = (chartB.currentCity?.name || 'City B').toUpperCase();
+                ctx.fillStyle = '#8e94a5';
+                ctx.font = '13px Consolas, monospace';
+                ctx.fillText(`${cityAName} vs ${cityBName} | Exported at ${new Date().toLocaleString()}`, padding, padding + 52);
+
+                // 绘制第一幅图表 (City A)
+                const yA = padding + headerHeight;
+                ctx.drawImage(canvasA, padding, yA);
+
+                // 绘制城市 A 浮水标签
+                ctx.fillStyle = 'rgba(0, 255, 127, 0.85)';
+                ctx.font = 'bold 14px system-ui, sans-serif';
+                ctx.fillText(`● ${cityAName}`, padding + 15, yA + 28);
+
+                // 绘制第二幅图表 (City B)
+                const yB = yA + canvasA.height + gap;
+                ctx.drawImage(canvasB, padding, yB);
+
+                // 绘制城市 B 浮水标签
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+                ctx.font = 'bold 14px system-ui, sans-serif';
+                ctx.fillText(`● ${cityBName}`, padding + 15, yB + 28);
+
+                // 绘制底部版权
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Global Weather & Temperature K-Line System • https://global-weather-k-line.vercel.app', width / 2, totalHeight - padding / 2);
+
+                // 触发下载
+                const url = outCanvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = `MeteoLab_${chartA.currentCity?.id || 'A'}_vs_${chartB.currentCity?.id || 'B'}_${Date.now()}.png`;
+                link.href = url;
+                link.click();
+            } catch (err) {
+                console.error('Export failed:', err);
+                alert('Export failed, please try again.');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.style.pointerEvents = 'auto';
+            }
+        };
     };
 </script>
 </body>

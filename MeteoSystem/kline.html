@@ -75,6 +75,9 @@
 
     <div id="chart-wrapper">
         <img src="static/images/pixel-hamster.png" class="pixel-hamster" alt="hamster">
+        <a href="https://ko-fi.com/kingcat666" target="_blank" class="coffee-cup-icon" title="Support this project / Buy me a coffee ☕">
+            <i class="fa-solid fa-mug-hot"></i>
+        </a>
 
         <div class="header-panel">
             <div class="btn-group">
@@ -141,15 +144,16 @@
         </div>
     </div>
 
-    <div class="footer-copyright">
-        © 2026 Kingcat66695111 • Personal Climate Visualization Project<br>
-        Version: 2026.03.28 • Built with passion for understanding climate change<br>
-        Global Weather & Temperature K-Line Monitor • 全球天气温度K线可视化实验台<br>
-        Educational & Non-commercial use only. Commercial use requires permission.<br>
-        If this tool helped you, consider supporting it → 
-        <a href="https://ko-fi.com/kingcat666" target="_blank" style="color:#00ff7f; text-decoration:none;">Ko-fi</a>
-        • Visualizing climate and temperature trends through time-series analysis
-    </div>
+    <footer class="footer-plain-intro">
+        <h2 class="intro-heading">Weather visualization with candlestick charts</h2>
+        <p class="intro-body">
+            Track temperature trends with customizable timeframes from hours to years. Our candlestick charts display daily highs, lows, and changes at a glance, making it easy to understand weather patterns. Perfect for weather enthusiasts, travelers, and anyone familiar with financial charts looking for a unique way to visualize temperature data.
+        </p>
+        <div class="intro-credits">
+            © 2026 Kingcat66695111 • Meteorological Monitor • 
+            <a href="https://ko-fi.com/kingcat666" target="_blank" class="footer-kofi-link">Support on Ko-fi</a>
+        </div>
+    </footer>
 
     <div id="globe-container"></div>
     <div id="selected-city-display">Loading...</div>
@@ -234,12 +238,11 @@
                 this._updateChart(cfg);
             }
             _updateChart(cfg) {
-                if (!this.chart) return;
                 this.chart.applyOptions({
                     layout: { textColor: cfg.textColor },
                     grid: { vertLines: { color: cfg.gridColor }, horzLines: { color: cfg.gridColor } },
                     timeScale: { borderColor: cfg.borderColor },
-                    leftPriceScale: { borderColor: cfg.borderColor }
+                    rightPriceScale: { borderColor: cfg.borderColor }
                 });
             }
         }
@@ -273,17 +276,76 @@
                 this._startClock();
 
                 const urlParams = new URLSearchParams(window.location.search);
-                const cityId = urlParams.get('city');
+                const cityParam = urlParams.get('city');
 
-                if (cityId && this.locationConfig[cityId.toLowerCase().trim()]) {
-                    this.dom.selector.value = cityId.toLowerCase().trim();
-                } else if (this.cityList.length > 0) {
-                    this.dom.selector.value = this.cityList[0].id;
+                if (cityParam && this.locationConfig[cityParam.toLowerCase().trim()]) {
+                    // 1. 若 URL 明确带 ?city=xxx，强制遵循用户或分享者意图
+                    this.dom.selector.value = cityParam.toLowerCase().trim();
+                    setTimeout(() => this.changeLocation(), 50);
+                } else {
+                    // 2. 默认快速呈现基础城市，保障首屏秒开不卡顿
+                    const defaultCity = this.cityList[0];
+                    if (defaultCity) this.dom.selector.value = defaultCity.id;
+                    setTimeout(() => this.changeLocation(), 50);
+
+                    // 3. 静默异步探测用户 IP 真实位置，自动计算并切换至最近的观测城市
+                    this._detectUserLocation().then(nearest => {
+                        if (nearest && nearest.id && nearest.id !== this.dom.selector.value) {
+                            this.dom.selector.value = nearest.id;
+                            this.changeLocation();
+                            // 无刷新同步 URL 参数，方便用户后续一键复制分享自身定位
+                            const newUrl = `${window.location.pathname}?city=${nearest.id}`;
+                            window.history.replaceState({ city: nearest.id }, '', newUrl);
+                        }
+                    });
                 }
+            }
 
-                setTimeout(() => {
-                    this.changeLocation();
-                }, 100);
+            async _detectUserLocation() {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 1200); // 1.2秒超时防挂起
+
+                    // 尝试免费、高可用、支持 HTTPS 与 CORS 的客户端 IP 定位服务
+                    let uLat = null, uLon = null;
+                    try {
+                        const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                        if (res.ok) {
+                            const data = await res.json();
+                            uLat = parseFloat(data.latitude);
+                            uLon = parseFloat(data.longitude);
+                        }
+                    } catch (e1) {
+                        // 备用静默探针
+                        const res2 = await fetch('https://freeipapi.com/api/json', { signal: controller.signal });
+                        if (res2.ok) {
+                            const data2 = await res2.json();
+                            uLat = parseFloat(data2.latitude);
+                            uLon = parseFloat(data2.longitude);
+                        }
+                    }
+                    clearTimeout(timeoutId);
+
+                    if (isNaN(uLat) || isNaN(uLon) || uLat === null || uLon === null) return null;
+
+                    // 计算欧几里得距离，匹配 170+ 城市中物理距离最近的气象站
+                    let nearest = null;
+                    let minDis = Infinity;
+                    this.cityList.forEach(city => {
+                        if (city.lat !== undefined && city.lon !== undefined) {
+                            const dLat = city.lat - uLat;
+                            const dLon = city.lon - uLon;
+                            const dist = dLat * dLat + dLon * dLon;
+                            if (dist < minDis) {
+                                minDis = dist;
+                                nearest = city;
+                            }
+                        }
+                    });
+                    return nearest;
+                } catch (err) {
+                    return null;
+                }
             }
 
             _initChart() {
@@ -308,7 +370,17 @@
                             return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
                         }
                     },
-                    leftPriceScale: { visible: true, borderColor: 'rgba(255,255,255,0.1)', scaleMargins: { top: 0.05, bottom: 0.25 } }
+                    leftPriceScale: {
+                        visible: true,
+                        borderColor: 'transparent',
+                        drawTicks: false,
+                        scaleMargins: { top: 0.85, bottom: 0 }
+                    },
+                    rightPriceScale: {
+                        visible: true,
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        scaleMargins: { top: 0.05, bottom: 0.25 }
+                    }
                 });
 
                 this.chartIns.applyOptions({
@@ -316,25 +388,40 @@
                 });
 
                 this.series.candle = this.chartIns.addCandlestickSeries({
-                    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, priceLineVisible: true, lastValueVisible: true, priceScaleId: 'left',
+                    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false, priceLineVisible: true, lastValueVisible: true, priceScaleId: 'right',
                     priceFormat: { type: 'custom', formatter: (p) => (p > 0 ? '+' : '') + p.toFixed(1) + '℃' }
                 });
 
                 this.series.hLine = this.chartIns.addLineSeries({
-                    color: '#C0392B', lineWidth: 2, priceScaleId: 'left', visible: false, lastValueVisible: false, priceLineVisible: false
+                    color: '#C0392B', lineWidth: 2, priceScaleId: 'right', visible: false, lastValueVisible: false, priceLineVisible: false
                 });
 
                 this.series.vol = this.chartIns.addHistogramSeries({
-                    priceScaleId: 'vol-scale', visible: true,
+                    priceScaleId: 'left',
+                    visible: true,
+                    lastValueVisible: true,
+                    priceLineVisible: false,
                     priceFormat: { type: 'custom', formatter: (p) => p.toFixed(1) + '%' }
                 });
 
-                this.chartIns.priceScale('vol-scale').applyOptions({
-                    visible: true, position: 'right', borderVisible: false, drawTicks: false, scaleMargins: { top: 0.85, bottom: 0 }, textColor: 'transparent'
+                this.series.vol.createPriceLine({
+                    price: 35,
+                    color: '#f44336',
+                    lineWidth: 1,
+                    lineStyle: 2,
+                    axisLabelVisible: true,
+                    title: 'DRT'
                 });
-
-                this.series.vol.createPriceLine({ price: 35, color: '#f44336', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'DRT' });
                 this.chartIns.subscribeCrosshairMove(p => this._handleTooltip(p));
+
+                window.addEventListener('resize', () => {
+                    if (this.chartIns && this.dom.container) {
+                        this.chartIns.applyOptions({
+                            width: this.dom.container.clientWidth,
+                            height: this.dom.container.clientHeight
+                        });
+                    }
+                });
             }
 
             _initGlobe() {

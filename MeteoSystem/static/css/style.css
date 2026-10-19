@@ -192,6 +192,47 @@ body::before {
     transform: translateY(-1px);
 }
 
+/* 右上角萌趣极客咖啡杯微动效 (呼应左上角小仓鼠) */
+@keyframes coffeeShake {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(-8deg) translateY(-2px); }
+    50% { transform: rotate(0deg) translateY(0); }
+    75% { transform: rotate(8deg) translateY(-2px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+.coffee-cup-icon {
+    position: absolute;
+    top: -38px;
+    right: 45px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--panel-bg);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: #ff7e67;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    animation: coffeeShake 3.2s infinite ease-in-out;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.coffee-cup-icon:hover {
+    background: rgba(255, 126, 103, 0.3);
+    border-color: #ff7e67;
+    color: #ff9a88;
+    transform: scale(1.15) rotate(0deg) !important;
+    animation-play-state: paused;
+    box-shadow: 0 8px 20px rgba(255, 126, 103, 0.45);
+}
+
 /* 主题切换下拉框 */
 .theme-select {
     background: var(--input-bg);
@@ -236,14 +277,76 @@ body::before {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-/* 版权区 */
-.footer-copyright {
+/* 页脚纯净文本介绍区 (去除底色背景卡片，通透白字排版) */
+.footer-plain-intro {
+    z-index: 1;
+    width: min(840px, 92vw);
+    margin: 35px auto 45px;
     text-align: center;
-    margin: 25px auto 15px;
-    font-size: 10px;
-    color: var(--text-muted);
-    max-width: 1000px;
-    line-height: 1.5;
+    color: #ffffff;
+}
+
+.intro-heading {
+    margin: 0 0 14px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.intro-body {
+    margin: 0 auto 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.intro-body-cn {
+    margin: 0 auto 16px;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.intro-credits {
+    margin-top: 14px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.footer-kofi-link {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.footer-kofi-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
+/* 亮色模式适配：使用深灰字保证清晰对比度 */
+body.light-theme .footer-plain-intro,
+body.light-theme .intro-heading {
+    color: #1f2937;
+    text-shadow: none;
+}
+body.light-theme .intro-body {
+    color: #374151;
+    text-shadow: none;
+}
+body.light-theme .intro-body-cn {
+    color: #6b7280;
+    text-shadow: none;
+}
+body.light-theme .intro-credits {
+    color: #9ca3af;
+    text-shadow: none;
 }
 
 /* ==========================================================================
@@ -252,13 +355,14 @@ body::before {
 #chart-wrapper {
     position: relative;
     z-index: 1;
-    padding: 12px 20px 25px 20px;
+    padding: 14px 24px 25px 24px;
     background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    backdrop-filter: blur(1px);
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-radius: 24px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
-    width: min(900px, 95vw);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    width: min(1050px, 90vw);
 }
 
 .pixel-hamster {
@@ -333,8 +437,8 @@ body::before {
 
 #globe-container {
     position: fixed;
-    bottom: 60px;
-    right: 58px;
+    bottom: 25px;
+    right: 25px;
     width: 100px;
     height: 100px;
     z-index: 9999;
@@ -352,12 +456,14 @@ body::before {
 
 #selected-city-display {
     position: fixed;
-    bottom: 48px;
-    right: 84px;
+    bottom: 12px;
+    right: 25px;
+    width: 100px;
+    text-align: center;
     color: #FEFAE0;
-    font-size: 9px;
-    font-weight: 500;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    font-size: 10px;
+    font-weight: 600;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
     pointer-events: none;
     z-index: 9998;
     letter-spacing: 0.5px;
@@ -365,23 +471,37 @@ body::before {
 
 .social-links {
     position: fixed;
-    bottom: 35px;
-    left: 40px;
+    bottom: 25px;
+    left: 28px;
     display: flex;
-    gap: 20px;
+    gap: 12px;
     z-index: 10000;
 }
 
 .social-links a {
-    color: var(--text-muted);
-    font-size: 20px;
-    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--panel-bg);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    color: var(--text-main);
+    font-size: 16px;
+    transition: all 0.25s ease;
     text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 .social-links a:hover {
     color: var(--accent-green);
+    border-color: var(--accent-green);
+    background: var(--accent-green-bg);
     transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 255, 127, 0.25);
 }
 
 /* ==========================================================================
@@ -390,14 +510,15 @@ body::before {
 .chart-wrapper {
     position: relative;
     z-index: 1;
-    width: min(1100px, 98vw); 
-    padding: 10px 20px 15px 20px; 
+    width: min(1100px, 96vw); 
+    padding: 14px 24px 20px 24px; 
     background: var(--panel-bg);
-    margin: 0 auto 15px auto;
-    border: 1px solid var(--panel-border);
-    backdrop-filter: blur(1px);
-    border-radius: 16px; 
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+    margin: 0 auto 20px auto;
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px; 
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .search-container { 
@@ -455,7 +576,48 @@ body::before {
 
 .main-chart-container {
     width: 100%;
-    height: 300px;
+    height: 350px;
     position: relative;
     background: transparent;
+}
+
+/* 实验室右下角导出按键 */
+.lab-export-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 10000;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: var(--panel-bg);
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.lab-export-btn i {
+    color: var(--accent-green);
+    font-size: 14px;
+}
+
+.lab-export-btn:hover {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+    background: var(--accent-green-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 255, 127, 0.28);
+}
+
+.lab-export-btn:active {
+    transform: translateY(0);
 }
