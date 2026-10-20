@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Website Favicon -->
+    <!-- 网站图标 -->
     <link rel="icon" href="favicon.png" type="image/png">
     <link rel="icon" href="static/images/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="static/images/icon.png">
-    <!-- Umami Website Analytics -->
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="09e8bc46-cd1d-4ade-b9ef-d606dd9f1ea2"></script>
+
+    <!-- 编码与视口 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 核心标题：优先「气温蜡烛图」，降低开尔文歧义风险 -->
-    <title>气温蜡烛图 / 温度K线 - 全球历史天气走势可视化 | Temperature Candlestick Chart</title>
+    <!-- 微软必应站长所有权验证 -->
+    <meta name="msvalidate.01" content="293B1CD5144B5ECF619A17C740D267C3" />
 
-    <!-- 核心描述 -->
-    <meta name="description" content="全球气温蜡烛图（Temperature Candlestick Chart）可视化平台。创新将金融K线/OHLC原理应用于气象：每日最高温、最低温、开盘温、收盘温绘制成蜡烛图，直观展示近十年历史气温波动与湿度变化。支持全球主要城市与3D地球交互。">
+    <!-- Umami 网站统计（仅保留唯一一份） -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="09e8bc46-cd1d-4ade-b9ef-d606dd9f1ea2"></script>
 
-    <!-- 高意图双语关键词 -->
-    <meta name="keywords" content="气温蜡烛图,温度K线图,气温K线图,天气蜡烛图,气象蜡烛图,气温OHLC,历史气温蜡烛图,温度蜡烛图,Temperature Candlestick Chart,Weather Candlestick,Temperature OHLC Chart,Daily Temperature Candlestick,Historical Temperature Candlestick,Climate Data Visualization">
+    <!-- 核心标题与描述（完全对齐 weathercandle.com 独立品牌） -->
+    <title>气温蜡烛图 / 温度K线 - WeatherCandle 全球历史天气走势可视化 | Temperature Candlestick Chart</title>
+    <meta name="description" content="WeatherCandle 全球气温蜡烛图（Temperature Candlestick Chart）可视化平台。创新将金融K线/OHLC原理应用于气象：每日最高温、最低温、开盘温、收盘温绘制成蜡烛图，直观展示近十年历史气温波动与湿度变化。支持全球主要城市与3D地球交互。">
+    <meta name="keywords" content="气温蜡烛图,温度K线图,气温K线图,天气蜡烛图,气象蜡烛图,气温OHLC,历史气温蜡烛图,温度蜡烛图,WeatherCandle,Temperature Candlestick Chart,Weather Candlestick,Temperature OHLC Chart,Climate Data Visualization">
 
-    <!-- 规范链接与爬虫指令（只保留一组） -->
-    <link rel="canonical" href="https://global-weather-k-line.vercel.app/kline.html">
+    <!-- 规范链接统一锁定正式独立域名（彻底剔除 vercel 旧链接） -->
+    <link rel="canonical" href="https://www.weathercandle.com/">
     <meta name="robots" content="index,follow">
 
     <!-- 版本与作者 -->
-    <meta name="generator" content="Meteorological Monitor v2026.03.28 by Kingcat66695111">
+    <meta name="generator" content="WeatherCandle v2026.10 by Kingcat66695111">
     <meta name="author" content="Kingcat66695111">
-    <meta name="version" content="1.0.20260328">
+    <meta name="version" content="1.0.20261019">
     <meta name="copyright" content="© 2026 Kingcat66695111. All Rights Reserved.">
 
-    <!-- Open Graph（社交分享） -->
-    <meta property="og:title" content="气温蜡烛图 - 全球温度K线可视化 | Temperature Candlestick Chart">
+    <!-- Open Graph 社交元数据（统一定位新域名） -->
+    <meta property="og:title" content="WeatherCandle 气温蜡烛图 - 全球温度K线可视化 | Temperature Candlestick Chart">
     <meta property="og:description" content="用金融蜡烛图原理可视化全球城市历史气温：最高温、最低温、开盘温、收盘温一目了然。支持近十年数据与3D地球交互。">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://global-weather-k-line.vercel.app/kline.html">
-    <meta property="og:image" content="https://global-weather-k-line.vercel.app/static/images/og-preview.png">
-    <meta property="og:site_name" content="Global Weather K-Line">
+    <meta property="og:url" content="https://www.weathercandle.com/">
+    <meta property="og:image" content="https://www.weathercandle.com/static/images/og-preview.png">
+    <meta property="og:site_name" content="WeatherCandle">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:locale:alternate" content="en_US">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="气温蜡烛图 | Temperature Candlestick Chart">
+    <meta name="twitter:title" content="WeatherCandle 气温蜡烛图 | Temperature Candlestick Chart">
     <meta name="twitter:description" content="Visualize global temperature trends with candlestick charts like stocks. Historical weather data + 3D globe.">
-    <meta name="twitter:image" content="https://global-weather-k-line.vercel.app/static/images/og-preview.png">
+    <meta name="twitter:image" content="https://www.weathercandle.com/static/images/og-preview.png">
 
-    <!-- 第三方依赖 -->
+    <!-- 👉 此处补回被误删的关键依赖库（图表库 + 地球库 + 图标库） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://unpkg.com/globe.gl"></script>
