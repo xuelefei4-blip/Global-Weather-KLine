@@ -1,0 +1,99 @@
+/* ==========================================================================
+   气象奇闻与极端天气挂槽样式 (主表原生字体 / 全英文 / 纯净标题正文 / 绝对镜像对称)
+   ========================================================================== */
+
+/* 左右挂槽基础容器：直接挂载于主表两侧，采用主表全局原生字体 */
+.side-slot-left, .side-slot-right {
+    position: absolute;
+    top: 6px;
+    width: clamp(80px, 8.2vw, 130px);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    pointer-events: auto;
+}
+
+/* 
+ * 1. 左侧挂槽：右边缘距离主表左边缘严格等于 22px
+ */
+.side-slot-left {
+    right: calc(100% + 22px);
+    text-align: left;
+}
+
+/* 
+ * 2. 右侧挂槽：左边缘距离主表右边缘严格等于 22px (绝对物理对称)
+ */
+.side-slot-right {
+    left: calc(100% + 22px);
+    text-align: left;
+}
+
+/* 顶部栏目标题：全英文大写，字间距与 LOCAL TIME 风格保持完全一致 */
+.slot-header {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff !important;
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    padding-bottom: 4px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+
+/* 故事内容卡片容器 */
+.hook-card {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin-bottom: 16px;
+}
+
+/* 故事标题：纯白加粗，点击直达维基百科，主表字体 */
+.hook-card a.hook-title {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: block;
+    font-size: clamp(10.5px, 0.8vw, 12px);
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: #ffffff !important;
+    line-height: 1.35;
+    text-decoration: none;
+    cursor: pointer;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
+    transition: color 0.2s ease;
+}
+
+.hook-card a.hook-title:hover {
+    color: #6ee7b7 !important;
+    text-decoration: underline;
+    text-underline-offset: 2.5px;
+}
+
+/* 摘要正文：柔和浅灰，主表字体，清晰分层 */
+.hook-card p {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: clamp(9.5px, 0.72vw, 10.5px);
+    line-height: 1.45;
+    color: #9ca3af !important;
+    margin: 0;
+    word-break: break-word;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+
+/* 移动端极端窄屏（宽度 < 800px）隐藏，桌面与笔记本全部常驻显示 */
+@media screen and (max-width: 800px) {
+    .side-slot-left, .side-slot-right {
+        display: none !important;
+    }
+}

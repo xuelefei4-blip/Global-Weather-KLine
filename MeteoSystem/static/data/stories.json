@@ -1,0 +1,30 @@
+[
+  {
+    "year": "1972",
+    "title": "Drop 54.4 deg C in 24h",
+    "tag": "Montana Cold Wave",
+    "summary": "In 1972, Loma, Montana recorded a world-record 24-hour temperature drop from 12.2 deg C to -42.2 deg C.",
+    "url": "https://en.wikipedia.org/wiki/List_of_weather_records"
+  },
+  {
+    "year": "1943",
+    "title": "Surge 27 deg C in 2 Mins",
+    "tag": "Chinook Wind Surge",
+    "summary": "In 1943, Spearfish, South Dakota experienced a rapid temperature rise from -20 deg C to +7 deg C in just two minutes.",
+    "url": "https://en.wikipedia.org/wiki/Spearfish,_South_Dakota"
+  },
+  {
+    "year": "1816",
+    "title": "Year Without a Summer",
+    "tag": "Volcanic Winter",
+    "summary": "Mount Tambora eruption caused severe global climate abnormalities, bringing frost and snow to North America in July.",
+    "url": "https://en.wikipedia.org/wiki/Year_Without_a_Summer"
+  },
+  {
+    "year": "1913",
+    "title": "Peak Heat: 56.7 deg C",
+    "tag": "Death Valley Heat",
+    "summary": "Death Valley recorded the highest ambient air temperature on Earth, establishing an extreme boundary of global climate.",
+    "url": "https://en.wikipedia.org/wiki/Death_Valley"
+  }
+]

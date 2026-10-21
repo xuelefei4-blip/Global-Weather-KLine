@@ -54,6 +54,7 @@
 
     <!-- 全局样式 -->
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/widgets.css?v=8">
 </head>
 <body>
 
@@ -81,6 +82,16 @@
     <div class="main-floating-title">Meteorological Monitor</div>
 
     <div id="chart-wrapper">
+        <!-- 左右悬浮侧边挂槽：直接挂载在主表两侧，左右间隙严格物理级镜像相等 -->
+        <aside class="side-slot-left">
+            <div class="slot-header">CLIMATE HISTORY</div>
+            <div class="slot-content"></div>
+        </aside>
+        <aside class="side-slot-right">
+            <div class="slot-header">WEATHER EXTREMES</div>
+            <div class="slot-content"></div>
+        </aside>
+
         <img src="static/images/pixel-hamster.png" class="pixel-hamster" alt="hamster">
         <a href="https://ko-fi.com/kingcat666" target="_blank" class="coffee-cup-icon" title="Support this project / Buy me a coffee ☕">
             <i class="fa-solid fa-mug-hot"></i>
@@ -742,5 +753,6 @@
         const app = new MeteoApp();
         app.init();
     </script>
+    <script src="static/js/widgets.js?v=8"></script>
 </body>
 </html>
