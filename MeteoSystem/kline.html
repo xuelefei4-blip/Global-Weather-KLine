@@ -70,10 +70,10 @@
     }
     </script>
 
-    <!-- 👉 此处补回被误删的关键依赖库（图表库 + 地球库 + 图标库） -->
+    <!-- 依赖库本地化与异步加速（彻底消除海外 unpkg 阻塞） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="https://unpkg.com/globe.gl"></script>
+    <script src="static/js/lightweight-charts.standalone.production.js"></script>
+    <script defer src="static/js/globe.gl.min.js"></script>
 
     <!-- 全局样式 -->
     <link rel="stylesheet" href="static/css/style.css">
@@ -468,7 +468,13 @@
             _initGlobe() {
                 try {
                     const el = document.getElementById('globe-container');
-                    if (!el || typeof Globe === 'undefined') return;
+                    if (!el) return;
+                    if (typeof Globe === 'undefined') {
+                        // 异步脚本后台加载中，就绪后无缝初始化，不阻塞首屏渲染
+                        window.addEventListener('load', () => setTimeout(() => this._initGlobe(), 200), { once: true });
+                        return;
+                    }
+                    if (this.globeIns) return;
                     this.globeIns = Globe()(el)
                         .globeImageUrl('static/images/earth-blue-marble.jpg')
                         .backgroundColor('rgba(0,0,0,0)').width(100).height(100)
