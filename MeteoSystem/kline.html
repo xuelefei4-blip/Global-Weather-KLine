@@ -113,6 +113,14 @@
         <aside class="side-slot-right">
             <div class="slot-header">WEATHER EXTREMES</div>
             <div class="slot-content"></div>
+            <!-- 匿名讨论留言挂槽 -->
+            <div class="chat-slot-box" id="chat-slot-box">
+                <button class="chat-slot-btn" id="open-chat-modal-btn" title="Open Anonymous Live Chat">
+                    <span class="chat-pulse-dot"></span>
+                    <i class="fa-regular fa-comments"></i>
+                    <span>ANONYMOUS CHAT</span>
+                </button>
+            </div>
         </aside>
 
         <img src="static/images/pixel-hamster.png" class="pixel-hamster" alt="hamster">
@@ -782,6 +790,38 @@
         const app = new MeteoApp();
         app.init();
     </script>
-    <script src="static/js/widgets.js?v=8"></script>
+    <!-- 匿名讨论弹出窗口 (毛玻璃暗黑全端适配) -->
+    <div class="chat-modal-overlay" id="chat-modal-overlay">
+        <div class="chat-modal-container">
+            <div class="chat-modal-header">
+                <div class="chat-modal-title">
+                    <span class="chat-pulse-dot"></span>
+                    <span>WEATHERCANDLE · ANONYMOUS CHAT</span>
+                </div>
+                <div class="chat-modal-actions">
+                    <a href="https://embed.tlk.io/weathercandle" target="_blank" class="chat-modal-external" title="Open in new tab">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                    <button class="chat-modal-close" id="close-chat-modal-btn" title="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="chat-modal-body">
+                <iframe 
+                    id="chat-embed-frame"
+                    src="about:blank"
+                    data-src="https://embed.tlk.io/weathercandle"
+                    frameborder="0"
+                    width="100%"
+                    height="100%"
+                    allowtransparency="true"
+                    allow="microphone; camera">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/widgets.js?v=9"></script>
 </body>
 </html>

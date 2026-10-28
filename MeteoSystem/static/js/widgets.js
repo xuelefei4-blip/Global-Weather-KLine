@@ -48,7 +48,47 @@
         }
     }
 
+    function setupChatModal() {
+        const openBtn = document.getElementById('open-chat-modal-btn');
+        const overlay = document.getElementById('chat-modal-overlay');
+        const closeBtn = document.getElementById('close-chat-modal-btn');
+        const frame = document.getElementById('chat-embed-frame');
+
+        if (!openBtn || !overlay) return;
+
+        function openModal() {
+            if (frame && frame.src === 'about:blank') {
+                const src = frame.getAttribute('data-src');
+                if (src) frame.src = src;
+            }
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        openBtn.addEventListener('click', openModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    }
+
     function init() {
+        setupChatModal();
+
         // 1. 立即加载默认精炼数据，防止任何网络延迟或跨域导致空白
         renderList(defaultStories);
 
