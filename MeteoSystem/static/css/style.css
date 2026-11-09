@@ -96,7 +96,7 @@ body {
     align-items: center;
     background: 
         linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000') center/cover no-repeat fixed;
+        url('../images/background.webp') center/cover no-repeat fixed;
     background-blend-mode: multiply;
     font-family: 'Segoe UI', system-ui, sans-serif;
     overflow-y: auto;

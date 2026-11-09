@@ -529,13 +529,15 @@
                     const visited = new Set();
                     const recursiveLoad = async (items) => {
                         const list = Array.isArray(items) ? items : (items.children || []);
-                        for (let it of list) {
+                        await Promise.all(list.map(async (it) => {
                             if (it.path && it.path.endsWith('.json') && !it.id) {
                                 const subPath = formatStaticPath(it.path);
                                 if (!visited.has(subPath)) {
                                     visited.add(subPath);
-                                    const r = await fetch(subPath);
-                                    if (r.ok) await recursiveLoad(await r.json());
+                                    try {
+                                        const r = await fetch(subPath);
+                                        if (r.ok) await recursiveLoad(await r.json());
+                                    } catch(e) {}
                                 }
                             } else if (it.id && it.name) {
                                 const cid = it.id.toLowerCase().trim();
@@ -548,7 +550,7 @@
                                     this._addCityToUI(it);
                                 }
                             }
-                        }
+                        }));
                     };
                     await recursiveLoad(data);
                 } catch (e) {
@@ -603,52 +605,66 @@
                 const city = this.locationConfig[id];
                 if (!city) return;
 
+                this._activeCityId = id;
                 this.dom.container.style.opacity = 0.4;
                 this.dom.coord.innerText = "Loading " + (city.name || id) + "...";
 
                 try {
                     if (this.dataCache.has(id)) {
                         this.rawData = this.dataCache.get(id);
+                        this._finishLocationRender(city, id, false);
                     } else {
                         const years = city.years || fullYears;
                         let cityPath = formatStaticPath(city.path || '');
                         if (!cityPath.endsWith('/')) cityPath += '/';
 
-                        const results = await Promise.allSettled(
-                            years.map(y => fetch(`${cityPath}${city.id}_${y}.json`).then(r => r.ok ? r.json() : null).catch(() => null))
+                        const parseValues = (resArr) => {
+                            let vals = [];
+                            resArr.forEach(res => {
+                                if (res.status === 'fulfilled' && res.value) {
+                                    const chunk = res.value.values || res.value;
+                                    if (Array.isArray(chunk)) vals = vals.concat(chunk);
+                                }
+                            });
+                            return vals;
+                        };
+
+                        // 阶段 1：首屏优先极速拉取最近 3 年（约 2MB，0.3s秒开出图）
+                        const recentCount = Math.min(3, years.length);
+                        const priorityYears = years.slice(-recentCount);
+                        const historyYears = years.slice(0, -recentCount);
+
+                        const priorityResults = await Promise.allSettled(
+                            priorityYears.map(y => fetch(`${cityPath}${city.id}_${y}.json`).then(r => r.ok ? r.json() : null).catch(() => null))
                         );
 
-                        this.rawData = [];
-                        results.forEach(res => {
-                            if (res.status === 'fulfilled' && res.value) {
-                                const chunk = res.value.values || res.value;
-                                if (Array.isArray(chunk)) this.rawData = this.rawData.concat(chunk);
-                            }
-                        });
+                        if (this._activeCityId !== id) return;
 
+                        this.rawData = parseValues(priorityResults);
                         this.rawData.sort((a, b) => a.time - b.time);
                         this.rawData = this.rawData.filter((it, idx, arr) => idx === 0 || it.time > arr[idx-1].time);
-                        if (this.rawData.length > 0) this.dataCache.set(id, [...this.rawData]);
+
+                        this._finishLocationRender(city, id, false);
+
+                        // 阶段 2：后台静默异步加载 2005~2023 早期历史，完成后无缝平滑扩展
+                        if (historyYears.length > 0) {
+                            Promise.allSettled(
+                                historyYears.map(y => fetch(`${cityPath}${city.id}_${y}.json`).then(r => r.ok ? r.json() : null).catch(() => null))
+                            ).then(historyResults => {
+                                if (this._activeCityId !== id) return;
+                                const histVals = parseValues(historyResults);
+                                if (histVals.length > 0) {
+                                    this.rawData = histVals.concat(this.rawData);
+                                    this.rawData.sort((a, b) => a.time - b.time);
+                                    this.rawData = this.rawData.filter((it, idx, arr) => idx === 0 || it.time > arr[idx-1].time);
+                                    this.dataCache.set(id, [...this.rawData]);
+                                    this.updateView(true);
+                                }
+                            });
+                        } else {
+                            if (this.rawData.length > 0) this.dataCache.set(id, [...this.rawData]);
+                        }
                     }
-
-                    const latDir = city.lat >= 0 ? 'N' : 'S';
-                    const lonDir = city.lon >= 0 ? 'E' : 'W';
-                    this.dom.coord.innerText = `${Math.abs(city.lat)}° ${latDir}, ${Math.abs(city.lon)}° ${lonDir}`;
-
-                    if (this.globeIns) {
-                        try {
-                            this.globeIns.ringsData([{ lat: city.lat, lng: city.lon }]);
-                            this.globeIns.pointOfView({ lat: city.lat, lng: city.lon, altitude: 2 }, 800);
-                        } catch(e) {}
-                    }
-
-                    this.updateView();
-
-                    const searchInput = document.getElementById('location-search-input');
-                    if (searchInput) searchInput.value = city.name;
-
-                    const cityDisplay = document.getElementById('selected-city-display');
-                    if (cityDisplay) cityDisplay.textContent = city.name || '';
                 } catch (e) {
                     console.error("Data fetch failed:", e);
                     this.dom.coord.innerText = "Load failed";
@@ -658,7 +674,28 @@
                 }
             }
 
-            updateView() {
+            _finishLocationRender(city, id, preserveRange = false) {
+                const latDir = city.lat >= 0 ? 'N' : 'S';
+                const lonDir = city.lon >= 0 ? 'E' : 'W';
+                this.dom.coord.innerText = `${Math.abs(city.lat)}° ${latDir}, ${Math.abs(city.lon)}° ${lonDir}`;
+
+                if (this.globeIns) {
+                    try {
+                        this.globeIns.ringsData([{ lat: city.lat, lng: city.lon }]);
+                        this.globeIns.pointOfView({ lat: city.lat, lng: city.lon, altitude: 2 }, 800);
+                    } catch(e) {}
+                }
+
+                this.updateView(preserveRange);
+
+                const searchInput = document.getElementById('location-search-input');
+                if (searchInput) searchInput.value = city.name;
+
+                const cityDisplay = document.getElementById('selected-city-display');
+                if (cityDisplay) cityDisplay.textContent = city.name || '';
+            }
+
+            updateView(preserveRange = false) {
                 const resType = document.querySelector('input[name="res"]:checked').value;
                 const processed = this._aggregate(this.rawData, resType);
 
@@ -703,7 +740,7 @@
                     timeScale.applyOptions({ barSpacing: 12 });
                 }
 
-                if (processed.length > 0) {
+                if (processed.length > 0 && !preserveRange) {
                     timeScale.fitContent();
                     timeScale.scrollToPosition(1, false);
                     if (processed.length > 80) {
